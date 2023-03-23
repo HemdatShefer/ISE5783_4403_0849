@@ -1,14 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="435841dd-9b60-4e2b-8c76-8e578aabe64a" name="Changes" comment="" />
+    <list default="true" id="435841dd-9b60-4e2b-8c76-8e578aabe64a" name="Changes" comment="opening class">
+      <change afterPath="$PROJECT_DIR$/src/geometries/Geometry.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/geometries/Plane.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/geometries/Polygon.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/primitives/Double3.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/primitives/Point.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/primitives/Util.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+        <option value="Interface" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectId" id="2NQdsWOuIFk9fBTt0GrzbiIahWv" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -19,9 +42,21 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true"
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="geometries" />
+      <recent name="primitives" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\חמדת\IDEA project\ISE5783_4403_0849\src\test" />
+      <recent name="C:\Users\חמדת\IDEA project\ISE5783_4403_0849\src\geometries" />
+      <recent name="C:\Users\חמדת\IDEA project\ISE5783_4403_0849\src\primitives" />
+    </key>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -31,6 +66,19 @@
       <option name="presentableId" value="Default" />
       <updated>1679600447589</updated>
     </task>
+    <task id="LOCAL‎-00001" summary="first try">
+      <created>1679600508649</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL‎-00001" />
+      <option name="project" value="LOCAL‎" />
+      <updated>1679600508649</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="first try" />
+    <MESSAGE value="opening class" />
+    <option name="LAST_COMMIT_MESSAGE" value="opening class" />
   </component>
 </project>
