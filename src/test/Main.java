@@ -80,20 +80,20 @@ public final class Main {
 
       // Test operations with points and vectors
       Point p1 = new Point(1, 2, 3) {
-         @Override
+       //  @Override
          public Vector getNormal(Point point) {
             return null;
          }
       };
       if (!(p1.add(new Vector(-1, -2, -3)).equals(new Point(0, 0, 0) {
-         @Override
+       //  @Override
          public Vector getNormal(Point point) {
             return null;
          }
       })))
          out.println("ERROR: Point + Vector does not work correctly");
       if (!new Vector(1, 1, 1).equals(new Point(2, 3, 4) {
-         @Override
+        // @Override
          public Vector getNormal(Point point) {
             return null;
          }

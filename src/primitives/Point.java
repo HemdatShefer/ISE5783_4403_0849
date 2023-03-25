@@ -1,92 +1,90 @@
 package primitives;
 
+import java.util.Objects;
 /**
- * A point in a 3D Euclidean space.
+
+ This class represents a point in 3D space using Cartesian coordinates.
+ A point is defined by its x, y, and z coordinates.
+ The class provides basic operations for working with points, such as adding a vector to a point,
+ subtracting one point from another to get a vector, computing the distance between two points,
+ and checking for equality between points.
+ /
+ public class Point {
+ /*
+ The Cartesian coordinates of the point.
  */
-public abstract class Point {
-    /**
-     * The 3D coordinates of the point.
-     */
-    private final Double3 coords;
-    protected double x;
-    protected double y;
-    protected double z;
-
-
-    /**
-     * Constructs a new Point object with the specified coordinates.
-     *
-     * @param x The X coordinate.
-     * @param y The Y coordinate.
-     * @param z The Z coordinate.
-     */
-    public Point(double x, double y, double z) {
-        this.coords = new Double3(x, y, z);
-    }
-
-    /**
-     * Constructs a new Point object with the specified coordinates.
-     *
-     * @param coords The coordinates of the point as a Double3 object.
-     */
-    Point(Double3 coords) {
-        this.coords = coords;
-    }
-
-    /**
-     * Calculates the vector from this point to another point.w
-     *
-     * @param other The other point.
-     * @return The vector from this point to the other point.
-     */
-    public Vector subtract(Point other) {
-        return new Vector(coords.subtract(other.coords));
-    }
-
-    /**
-     * Adds a vector to this point and returns a new point.
-     *
-     * @param vector The vector to add.
-     * @return A new point which is the result of adding the vector to this point.
-     */
-    public Point add(Vector vector) {
-        return new Point(coords.add(vector.getHead())) {
-            @Override
-            public Vector getNormal(Point point) {
-                return null;
-            }
-        };
-    }
-
-    /**
-     * Calculates the squared distance between this point and another point.
-     *
-     * @param other The other point.
-     * @return The squared distance between this point and the other point.
-     */
-    public double distanceSquared(Point other) {
-        return coords.subtract(other.coords).lengthSquared();
-    }
-
-    /**
-     * Calculates the distance between this point and another point.
-     *
-     * @param other The other point.
-     * @return The distance between this point and the other point.
-     */
-    public double distance(Point other) {
+public class Point {
+protected Double3 xyz;
+/**
+ Constructs a new point with the given x, y, and z coordinates.
+ @param x the x coordinate of the point
+ @param y the y coordinate of the point
+ @param z the z coordinate of the point
+ */
+public Point(double x, double y, double z) {
+        xyz = new Double3(x, y, z);
+        }
+/**
+ Constructs a new point with the given Cartesian coordinates.
+ @param p the Cartesian coordinates of the point
+ */
+public Point(Double3 p) {
+        xyz = new Double3(p.d1, p.d2, p.d3);
+        }
+/**
+ Adds the given vector to this point and returns the resulting point.
+ @param vector the vector to add to this point
+ @return the resulting point after adding the vector
+ */
+public Point add(Vector vector) {
+        return new Point(xyz.add(vector.xyz));
+        }
+/**
+ Subtracts the given point from this point and returns the resulting vector.
+ @param other the point to subtract from this point
+ @return the resulting vector after subtracting the other point
+ */
+public Vector subtract(Point other) {
+        return new Vector(xyz.subtract(other.xyz));
+        }
+/**
+ Computes the squared distance between this point and the given point.
+ @param other the other point to compute the distance to
+ @return the squared distance between this point and the other point
+ */
+public double distanceSquared(Point other) {
+        return (this.xyz.d1 - other.xyz.d1) * (this.xyz.d1 - other.xyz.d1)
+        + (this.xyz.d2 - other.xyz.d2) * (this.xyz.d2 - other.xyz.d2)
+        + (this.xyz.d3 - other.xyz.d3) * (this.xyz.d3 - other.xyz.d3);
+        }
+/**
+ Computes the distance between this point and the given point.
+ @param other the other point to compute the distance to
+ @return the distance between this point and the other point
+ */
+public double distance(Point other) {
         return Math.sqrt(distanceSquared(other));
-    }
-
-    /**
-     * Returns a string representation of this point in the format "(x, y, z)".
-     *
-     * @return A string representation of this point.
-     */
-    @Override
-    public String toString() {
-        return coords.toString();
-    }
-
-    public abstract Vector getNormal(Point point);
-}
+        }
+/**
+ Compares this point to the given object for equality.
+ Two points are considered equal if they have the same Cartesian coordinates.
+ @param obj the object to compare to this point
+ @return true if the object is a point with the same coordinates as this point, false otherwise
+ */
+@Override
+public boolean equals(Object obj) {
+        if (this == obj) return true;
+        return (obj instanceof Point other)
+        && this.xyz.equals(other.xyz);
+        }
+/**
+ Returns a string representation of this point.
+ @return a string representation of this point
+ */
+@Override
+public String toString() {
+        return "Point{" +
+        "xyz=" + xyz +
+        '}';
+        }
+        }

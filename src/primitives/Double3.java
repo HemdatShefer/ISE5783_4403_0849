@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package primitives;
 
@@ -20,9 +20,6 @@ public class Double3 {
 
    /** One's triad (1,1,1) */
    public static final Double3 ONE  = new Double3(1, 1, 1);
-   public double x;
-   public double y;
-   public double z;
 
    /** Constructor to initialize Double3 based object with its three number values
     * @param d1 first number value
@@ -47,8 +44,8 @@ public class Double3 {
       if (this == obj) return true;
       if (obj instanceof Double3 other)
          return isZero(d1 - other.d1)
-               && isZero(d2 - other.d2)
-               && isZero(d3 - other.d3);
+                 && isZero(d2 - other.d2)
+                 && isZero(d3 - other.d3);
       return false;
    }
 
@@ -114,9 +111,5 @@ public class Double3 {
     *               triad, false otherwise */
    public boolean lowerThan(Double3 other) {
       return d1 < other.d1 && d2 < other.d2 && d3 < other.d3;
-   }
-
-   public double lengthSquared() {
-      return 0;
    }
 }

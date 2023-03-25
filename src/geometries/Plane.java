@@ -4,18 +4,17 @@ import primitives.Point;
 import primitives.Vector;
 
 /**
- * Plane class represents two-dimensional plane in 3D Cartesian coordinate
- * system
- *
+
+ Plane class represents a two-dimensional plane in 3D Cartesian coordinate system.
  */
 public class Plane implements Geometry {
-    /** The plane's vertex */
-    private Point vertex;
-    /** The plane's normal vector */
+    private final Point vertex;
+    /** The vertex of the plane /
+     private Point vertex;
+     /* The normal vector to the plane */
     private Vector normal;
-
     /**
-     * Constructs a plane object by three points in space.
+     * Constructs a Plane object by three points in space.
      *
      * @param vertex  a point on the plane
      * @param vertex1 another point on the plane
@@ -32,14 +31,20 @@ public class Plane implements Geometry {
     /**
      * Returns the normal vector of the plane.
      *
-     * @return the normal vector
+     * @return the normal vector of the plane
      */
     public Vector getNormal() {
         return normal;
     }
 
+    /**
+     * Returns the normal vector to the plane at the given point (which is on the plane).
+     *
+     * @param point a point on the plane
+     * @return the normal vector to the plane
+     */
     @Override
     public Vector getNormal(Point point) {
         return normal;
     }
-}
+    }
