@@ -4,7 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="435841dd-9b60-4e2b-8c76-8e578aabe64a" name="Changes" comment="final targil 1" />
+    <list default="true" id="435841dd-9b60-4e2b-8c76-8e578aabe64a" name="Changes" comment="final targil 1">
+      <change afterPath="$PROJECT_DIR$/src/geometries/Cylinder.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/geometries/Sphere.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/geometries/Triangle.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/geometries/Tube.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/primitives/Ray.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/primitives/Vector.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/geometries/Plane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/geometries/Plane.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -46,6 +54,8 @@
       <recent name="primitives" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\IdeaProjects\ISE5783_4403_0849\src\primitives" />
+      <recent name="C:\IdeaProjects\ISE5783_4403_0849\src\geometries" />
       <recent name="C:\Users\חמדת\IDEA project\ISE5783_4403_0849\src\test" />
       <recent name="C:\Users\חמדת\IDEA project\ISE5783_4403_0849\src\geometries" />
       <recent name="C:\Users\חמדת\IDEA project\ISE5783_4403_0849\src\primitives" />
@@ -89,6 +99,17 @@
     </task>
     <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="first try" />
