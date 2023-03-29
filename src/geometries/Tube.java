@@ -19,7 +19,6 @@ public class Tube implements Geometry {
      */
     @Override
     public Vector getNormal(Point point) {
-        // TODO: Implement the logic for computing the normal vector at the specified point
         return null;
     }
 }

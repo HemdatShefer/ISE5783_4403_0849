@@ -13,18 +13,31 @@ public class Plane implements Geometry {
      private Point vertex;
      /* The normal vector to the plane */
     private final Vector normal;
+
+    /**
+     * Constructs a new Plane object with the specified vertex and normal.
+     *
+     * @param vertex The Point representing the vertex of the plane.
+     * @param normal The Vector representing the normal of the plane.
+     */
+    public Plane(Point vertex, Vector normal) {
+        this.vertex = vertex;
+        this.normal = normal;
+    }
+
+
     /**
      * Constructs a Plane object by three points in space.
      *
-     * @param vertex  a point on the plane
-     * @param vertex1 another point on the plane
-     * @param vertex2 a third point on the plane
+     * @param x  a point on the plane
+     * @param y another point on the plane
+     * @param z a third point on the plane
      */
-    public Plane(Point vertex, Point vertex1, Point vertex2) {
-        Vector v1 = vertex1.subtract(vertex);
-        Vector v2 = vertex2.subtract(vertex);
+    public Plane(Point x, Point y, Point z) {
+        Vector v1 = y.subtract(x);
+        Vector v2 = z.subtract(x);
 
-        this.vertex = vertex;
+        this.vertex = x;
         normal = v1.crossProduct(v2).normalize();
     }
 

@@ -11,20 +11,28 @@ import primitives.*;
 public class Triangle extends Polygon{
     /**
      * Constructs a triangle with the specified three points.
-     * @param p0 the first vertex of the triangle
-     * @param p1 the second vertex of the triangle
-     * @param p2 the third vertex of the triangle
+     * @param point0 the first vertex of the triangle
+     * @param point1 the second vertex of the triangle
+     * @param point2 the third vertex of the triangle
      */
-    final Point p0;
-    final  Point p1;
-    final Point p2;
+    final Point point0;
+    final  Point point1;
+    final Point point2;
 
-    public Triangle(Point p0, Point p1, Point p2) {
-        super(p0,p1,p2);
-        this.p0 = p0;
-        this.p1 = p1;
-        this.p2 = p2;
+    /**
+     * Constructs a new Triangle object with the specified points.
+     *
+     * @param point0 The first Point of the triangle.
+     * @param point1 The second Point of the triangle.
+     * @param point2 The third Point of the triangle.
+     */
+    public Triangle(Point point0, Point point1, Point point2) {
+        super(point0, point1, point2);
+        this.point0 = point0;
+        this.point1 = point1;
+        this.point2 = point2;
     }
+
 
     /**
      * Computes and returns the normal vector at the specified point on the surface of the triangle.
@@ -33,7 +41,6 @@ public class Triangle extends Polygon{
      */
     @Override
     public Vector getNormal(Point point) {
-        // TODO: Implement the logic for computing the normal vector at the specified point
         return null;
     }
     }
