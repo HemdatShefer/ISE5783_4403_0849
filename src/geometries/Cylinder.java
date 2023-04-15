@@ -1,6 +1,7 @@
 package geometries;
 
 import primitives.Point;
+import primitives.Ray;
 import primitives.Vector;
 
 /**
@@ -8,6 +9,10 @@ import primitives.Vector;
  */
 public class Cylinder extends Tube{
 private double height;
+        public Cylinder(double v, Ray ray, double h) {
+                super(v, ray);
+                height=h;
+        }
 /**
  * Returns the normal vector to the cylinder at the given point on its surface
  *

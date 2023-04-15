@@ -59,4 +59,11 @@ public String toString() {
         ", dir=" + dir +
         '}';
         }
+
+        public Point getOrigin() {
+                return p0;
         }
+        public Vector getDirection() {
+                return dir;
+        }
+}

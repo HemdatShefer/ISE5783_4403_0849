@@ -12,6 +12,11 @@ public class Tube implements Geometry {
     protected Ray axisRay; // the axis ray of the tube
     protected double radius; // the radius of the tube
 
+    public Tube(double v, Ray ray) {
+        radius=v;
+        axisRay=ray;
+    }
+
     /**
      * Computes and returns the normal vector at the specified point on the surface of the tube.
      * @param point a point on the surface of the tube
