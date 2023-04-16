@@ -87,6 +87,9 @@ public double dotProduct(Vector v3) {
  Returns the cross product of this vector and the given vector.
  @param v2 the vector to cross product with this vector
  @return the cross product of this vector and the given vector
+ 
+ v1 x v2 = (y1 * z2 - z1 * y2, z1 * x2 - x1 * z2, x1 * y2 - y1 * x2)
+
  */
 public Vector crossProduct(Vector v2) {
         return new Vector(this.xyz.d2 * v2.xyz.d3 - this.xyz.d3 * v2.xyz.d2,
