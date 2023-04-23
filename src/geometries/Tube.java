@@ -8,6 +8,8 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
+import java.awt.*;
+
 public class Tube implements Geometry {
     protected Ray axisRay; // the axis ray of the tube
     protected double radius; // the radius of the tube
@@ -24,6 +26,11 @@ public class Tube implements Geometry {
      */
     @Override
     public Vector getNormal(Point point) {
+        return null;
+    }
+
+    @Override
+    public List findIntersections(Ray r) {
         return null;
     }
 }

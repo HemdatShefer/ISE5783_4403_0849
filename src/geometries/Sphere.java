@@ -1,7 +1,11 @@
 package geometries;
 
 import primitives.Point;
+import primitives.Ray;
 import primitives.Vector;
+
+import java.awt.*;
+
 public class Sphere implements Geometry{
     private Point center;
     private double radius;
@@ -20,4 +24,9 @@ public class Sphere implements Geometry{
 public Vector getNormal(Point point) {
         return null;
         }
+
+    @Override
+    public List findIntersections(Ray r) {
+        return null;
     }
+}
