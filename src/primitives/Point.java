@@ -87,4 +87,9 @@ public String toString() {
         "xyz=" + xyz +
         '}';
         }
+
+
+        public double getX() {
+                return 0;
         }
+}

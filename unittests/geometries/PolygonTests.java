@@ -2,6 +2,7 @@ package geometries;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import geometries.Polygon;
 import primitives.Point;
+import primitives.Ray;
 import primitives.Vector;
 
 /** Testing Polygons
@@ -84,4 +86,36 @@ public class PolygonTests {
             assertTrue(isZero(result.dotProduct(pts[i].subtract(pts[i == 0 ? 3 : i - 1]))),
                     "Polygon's normal is not orthogonal to one of the edges");
     }
+    @Test
+    public void testFindIntsersectionPoints() {
+        Triangle tr = new Triangle(new Point(1,0,1), new Point(0,1,1), new Point(0,0,-1));
+        // ============ Equivalence Partitions Tests ==============
+
+        //**** Group: The Ray must be neither orthogonal nor parallel to the plane
+        //TC01:The Ray intersects the plane
+        assertEquals(1, (tr.findIntsersections(new Ray(new Point(0, 0, 0.5), new Vector(0, 0, 5)))).size(), "Wrong number of points");
+
+        //TC02:Ray does not intersect the plane
+        assertNull((tr.findIntsersections(new Ray(new Point(1, 0, 0), new Vector(5, 0, 0)))), "Wrong number of points");
+
+        // **** Group: Ray is parallel to the plane
+        //TC03:the ray included in the plane
+        assertNull((tr.findIntsersections(new Ray(new Point(0, 0, 1), new Vector(0, 4, 0)))), "Wrong number of points");
+
+        //TC04:the ray not included in the plane
+        assertNull((tr.findIntsersections(new Ray(new Point(1, 0, 0), new Vector(0, 4, 0)))), "Wrong number of points");
+
+        // =============== Boundary Values Tests ==================
+
+        //****Group: Ray is orthogonal to the plane
+        //Tc05:The Ray before the plane
+        assertEquals(1, (tr.findIntsersections(new Ray(new Point(0, 0, 0.5), new Vector(0, 0, 1)))).size(), "Wrong number of points");
+
+        //Tc06:The Ray in the plane
+        assertNull((tr.findIntsersections(new Ray(new Point(0, 0, 1), new Vector(0, 0, 4)))), "Wrong number of points");
+
+        //Tc07:The Ray after the plane
+        assertNull((tr.findIntsersections(new Ray(new Point(0, 0, 1.5), new Vector(0, 0, 10)))), "Wrong number of points");
+    }
+
 }

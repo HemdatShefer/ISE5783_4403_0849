@@ -79,5 +79,9 @@ class CylinderTests {
         //TC05: Test with point on the bottom edge of the cylinder
         assertEquals(new Vector(0, 0, -1), cylinder.getNormal(new Point(0, 1, 0)), "Bad normal to the bottom-edge of the cylinder");
     }
+    @Test
+    public void testFindIntersectionPoints()
+    {
+    }
 
 }

@@ -56,5 +56,7 @@ class TubeTests {
         assertEquals(new Vector(0, 0, 1), cylinder.getNormal(new Point(1, 0, 3)), "Bad normal to the top-edge of the cylinder");
         assertEquals(new Vector(0, 0, -1), cylinder.getNormal(new Point(1, 1, 0)), "Bad normal to the bottom-edge of the cylinder");
     }
-
+    public void testFindIntersectionPoints()
+    {
+    }
 }
