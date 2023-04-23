@@ -8,7 +8,7 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
-import java.awt.*;
+import java.util.List;
 
 public class Tube implements Geometry {
     protected Ray axisRay; // the axis ray of the tube
@@ -29,8 +29,9 @@ public class Tube implements Geometry {
         return null;
     }
 
+
     @Override
-    public List findIntersections(Ray r) {
+    public List<Point> findIntsersections(Ray ray) {
         return null;
     }
 }
