@@ -1,7 +1,5 @@
 package primitives;
 
-import java.util.Objects;
-
 /**
 
  This class represents a ray in 3D space, which consists of an origin point and a direction vector.
@@ -47,7 +45,16 @@ public boolean equals(Object obj) {
         && this.p0.equals(other.p0)
         && this.dir.equals(other.dir);
         }
-/**
+
+        public Point getPoint() {
+                return p0;
+        }
+
+        public Vector getDir() {
+                return dir;
+        }
+
+        /**
 
  Returns a string representation of this ray.
  @return a string representation of this ray

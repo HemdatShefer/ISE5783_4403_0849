@@ -27,7 +27,8 @@ public Vector getNormal(Point point) {
 
 
     @Override
-    public List<Point> findIntsersections(Ray ray) {
+    public List<Point> findIntsersections(Ray ray)
+    {
         return null;
     }
 }

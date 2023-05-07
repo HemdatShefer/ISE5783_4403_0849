@@ -1,5 +1,6 @@
 package geometries;
 
+import static primitives.Util.alignZero;
 import static primitives.Util.isZero;
 
 import java.util.List;
@@ -84,6 +85,52 @@ public class Polygon implements Geometry {
 
    @Override
    public List<Point> findIntsersections(Ray ray) {
-      return null;
+      // Find the intersection points between the ray and the plane containing the polygon
+      List<Point> result = plane.findIntsersections(ray);
+
+      // If there are no intersection points, return null
+      if (result == null) {
+         return null;
+      }
+
+      // Get the starting point and direction of the ray
+      Point point = ray.getPoint();
+      Vector v = ray.getDir();
+
+      // Get two points from the polygon that are not lying in the same straight line with the ray
+      Point P1 = vertices.get(1);
+      Point P2 = vertices.get(0);
+
+      // Calculate two vectors that connect each polygon point to the starting point of the ray
+      Vector v1 = P1.subtract(point);
+      Vector v2 = P2.subtract(point);
+
+      // Calculate the sign of the dot product of the ray direction and the cross product of the two vectors
+      double sign = alignZero(v.dotProduct(v1.crossProduct(v2)));
+
+      // Check the sign of the dot product for the remaining polygon points
+      boolean positive = sign > 0;
+      for (int i = vertices.size() - 1; i > 0; --i)
+      {
+         v1 = v2;
+         v2 = vertices.get(i).subtract(point);
+
+         // Calculate the sign of the dot product of the ray direction and the cross product of the two vectors
+         sign = alignZero(v.dotProduct(v1.crossProduct(v2)));
+
+         // If the sign is zero, it means the ray is parallel to the polygon and there are no intersection points
+         if (isZero(sign)) {
+            return null;
+         }
+
+         // If the signs are different, the ray intersects the polygon in two different directions and there are no intersection points
+         if (positive != (sign > 0)) {
+            return null;
+         }
+      }
+
+      // If all dot products have the same sign, the ray intersects the polygon in only one direction and the result is valid
+      return result;
    }
+
 }
