@@ -90,4 +90,6 @@ public class ImageWriter {
 		image.setRGB(xIndex, yIndex, color.getColor().getRGB());
 	}
 
+
+
 }
