@@ -2,6 +2,8 @@ package renderer;
 
 import primitives.*;
 
+import java.util.MissingResourceException;
+
 import static primitives.Util.isZero;
 
 /**
@@ -27,6 +29,8 @@ public class Camera {
     private double width;
     private double height;
     private double distance;
+    private ImageWriter imageWriter;
+    private RayTracerBase rayTracer;
 
     /**
      * Constructs a new camera object with the specified location and direction vectors.
@@ -106,7 +110,6 @@ public class Camera {
     }
     public Ray constructRayThroughPixel(int Nx, int Ny, int i, int j, double screenDistance, double screenWidth, double screenHeight) {
         Point Pc = location.add(vTo.scale(screenDistance));
-
         double Ry = screenHeight/Ny;
         double Rx = screenWidth/Nx;
 
@@ -114,7 +117,6 @@ public class Camera {
         double xj = ((j - Nx/2.0)*Rx + Rx/2.0);
 
         Point Pij = Pc;
-
         if (!isZero(xj)) {
             Pij = Pij.add(vRight.scale(xj));
         }
@@ -124,7 +126,6 @@ public class Camera {
         }
 
         Vector Vij = Pij.subtract(location);
-
         return new Ray(location, Vij.normalize());
     }
 
@@ -176,4 +177,47 @@ public class Camera {
     public double getDistance() {
         return distance;
     }
+
+
+    public void printGrid(int interval, Color color) {
+        if (imageWriter == null)
+            throw new MissingResourceException("", "", "Camera is not initialized");
+
+        int nX = imageWriter.getNx();
+        int nY = imageWriter.getNy();
+        for (int i = 0; i < nX; i++) {
+            for (int j = 0; j < nY; j++) {
+                if ((i % interval == 0) || (j % interval == 0))
+                    imageWriter.writePixel(i, j, color);
+            }
+        }
     }
+    public void writeToImage()
+    {
+        if(imageWriter == null)
+        {
+            throw new MissingResourceException("", "", "Camera is not initialized");
+        }
+        imageWriter.writeToImage();
+
+    }
+    public Camera renderImage() {
+        if (location == null || vTo == null || vUp == null || vRight == null || distance == 0 || height == 0 || width == 0 || imageWriter == null || rayTracer == null)
+            throw new MissingResourceException("", "", "Camera is not initialized");
+        int nX = imageWriter.getNx();
+        int nY = imageWriter.getNy();
+        for (int i = 0; i < nX; i++)
+        {
+            for (int j = 0; j < nY; j++)
+            {
+                Ray ray = constructRay(nX, nY, j, i);
+                Color pixelColor = rayTracer.traceRay(ray);
+                imageWriter.writePixel(j, i, pixelColor);
+            }
+        }
+
+        return null;
+    }
+
+
+}

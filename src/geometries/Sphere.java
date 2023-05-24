@@ -10,10 +10,12 @@ public class Sphere implements Geometry{
     private Point center;
     private double radius;
 
-    public Sphere(double r, Point c) {
+    public Sphere( Point c,double r) {
         radius=r;
         center=c;
     }
+
+
 
     /**
  * Computes and returns the normal vector at the specified point on the surface of the sphere.

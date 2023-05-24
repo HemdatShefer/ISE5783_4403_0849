@@ -14,7 +14,8 @@ import java.util.Objects;
  The Cartesian coordinates of the point.
  */
 public class Point {
-protected Double3 xyz;
+        public static final Point ZERO = new Point(0,0,0) ;
+        protected Double3 xyz;
 /**
  Constructs a new point with the given x, y, and z coordinates.
  @param x the x coordinate of the point
