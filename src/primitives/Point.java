@@ -92,4 +92,5 @@ public String toString() {
         public double getX() {
                 return 0;
         }
+
 }
