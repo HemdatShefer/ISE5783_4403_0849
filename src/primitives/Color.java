@@ -11,10 +11,10 @@ public class Color {
    private final Double3     rgb;
 
    /** Black color = (0,0,0) */
-   public static final Color BLACK = new Color();
+   public static final Color BLACK = new Color(backgroundStr);
 
-   /** Default constructor - to generate Black Color (privately) */
-   private Color() { rgb = Double3.ZERO; }
+   /** Default constructor - to generate Black Color (privately) **********private to public*/
+   public Color(String backgroundStr) { rgb = Double3.ZERO; }
 
    /** Constructor to generate a color according to RGB components Each component
     * in
