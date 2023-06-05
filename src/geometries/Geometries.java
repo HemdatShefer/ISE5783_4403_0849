@@ -6,7 +6,7 @@ import primitives.Ray;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Geometries implements Intersectable
+public class Geometries extends Intersectable
 {
     private List<Intersectable> intersectableList;
 
@@ -22,7 +22,8 @@ public class Geometries implements Intersectable
     {
 
     }
-/**
+
+    /**
      * Finds the intersections of a given ray with the geometry object.
      * If no intersections are found, an empty list is returned.
      *
@@ -30,7 +31,24 @@ public class Geometries implements Intersectable
      * @return A list of intersection points between the ray and the geometry object
      */
     @Override
-    public List<Point> findIntsersections(Ray ray) {
+    public List<Point> findIntersections(Ray ray) {
         return null;
     }
+
+    /**
+     * @param ray
+     * @return
+     */
+    @Override
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+        return null;
+    }
+/**
+     * Finds the intersections of a given ray with the geometry object.
+     * If no intersections are found, an empty list is returned.
+     *
+     * @param ray The ray to intersect with the geometry object
+     * @return A list of intersection points between the ray and the geometry object
+     */
+
 }

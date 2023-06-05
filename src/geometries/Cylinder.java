@@ -10,7 +10,7 @@ import primitives.Vector;
 public class Cylinder extends Tube{
 private double height;
         public Cylinder(double v, Ray ray, double h) {
-                super(v, ray);
+                super(ray,v);
                 height=h;
         }
 /**

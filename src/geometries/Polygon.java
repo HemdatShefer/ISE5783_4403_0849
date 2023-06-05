@@ -1,6 +1,5 @@
 package geometries;
 
-import static primitives.Util.alignZero;
 import static primitives.Util.isZero;
 
 import java.util.List;
@@ -12,7 +11,7 @@ import primitives.Vector;
 /** Polygon class represents two-dimensional polygon in 3D Cartesian coordinate
  * system
  * @author Dan */
-public class Polygon implements Geometry {
+public class Polygon extends Geometry {
    /** List of polygon's vertices */
    protected final List<Point> vertices;
    /** Associated plane in which the polygon lays */
@@ -84,53 +83,38 @@ public class Polygon implements Geometry {
 
 
    @Override
-   public List<Point> findIntsersections(Ray ray) {
-      // Find the intersection points between the ray and the plane containing the polygon
-      List<Point> result = plane.findIntsersections(ray);
+   public List<Point> findIntersections(Ray ray)
+   {
+      List<Point> intersection = plane.findIntersections(ray);
+      if (intersection == null)
+         return  null;
+      Point intersectionPoint = intersection.get(0);
 
-      // If there are no intersection points, return null
-      if (result == null) {
-         return null;
-      }
+      Vector[] n = new Vector[vertices.size()];
 
-      // Get the starting point and direction of the ray
-      Point point = ray.getPoint();
-      Vector v = ray.getDir();
+      Point[] P = new Point[vertices.size()]; vertices.toArray(P);// For run-time
+      try {
+         for (int i = 0; i < n.length; i++) {
+            n[i] = P[(i + 1) % n.length].subtract(P[i]).crossProduct(P[i].subtract(intersectionPoint));
+         }}
+      catch (IllegalArgumentException e) { // There are Zero Vector -> no intersections.
+         return null; }
 
-      // Get two points from the polygon that are not lying in the same straight line with the ray
-      Point P1 = vertices.get(1);
-      Point P2 = vertices.get(0);
-
-      // Calculate two vectors that connect each polygon point to the starting point of the ray
-      Vector v1 = P1.subtract(point);
-      Vector v2 = P2.subtract(point);
-
-      // Calculate the sign of the dot product of the ray direction and the cross product of the two vectors
-      double sign = alignZero(v.dotProduct(v1.crossProduct(v2)));
-
-      // Check the sign of the dot product for the remaining polygon points
-      boolean positive = sign > 0;
-      for (int i = vertices.size() - 1; i > 0; --i)
-      {
-         v1 = v2;
-         v2 = vertices.get(i).subtract(point);
-
-         // Calculate the sign of the dot product of the ray direction and the cross product of the two vectors
-         sign = alignZero(v.dotProduct(v1.crossProduct(v2)));
-
-         // If the sign is zero, it means the ray is parallel to the polygon and there are no intersection points
-         if (isZero(sign)) {
+      for (int i = 1; i < n.length; i++)
+         if (!isZero(n[i].dotProduct(n[0]) - n[i].length()*n[0].length()))
             return null;
-         }
 
-         // If the signs are different, the ray intersects the polygon in two different directions and there are no intersection points
-         if (positive != (sign > 0)) {
-            return null;
-         }
-      }
+      return intersection;
 
-      // If all dot products have the same sign, the ray intersects the polygon in only one direction and the result is valid
-      return result;
+   }
+
+   /**
+    * @param ray
+    * @return
+    */
+   @Override
+   protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+      return null;
    }
 
 }

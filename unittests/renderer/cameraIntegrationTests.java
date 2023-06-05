@@ -13,7 +13,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class cameraIntegrationTests {
+class cameraIntegrationTests {
     // ============ Equivalence Partitions Tests ==============
     Camera cm = new Camera(new Point(0,0,0.5), new Vector(0,1,0), new Vector(0,0,-1));
     Camera cm1 = new Camera(new Point(0,0,0), new Vector(0,1,0), new Vector(0,0,-1));
@@ -21,12 +21,13 @@ public class cameraIntegrationTests {
     public void testSmallSphere()
     {
         //TC01: Small Sphere 2 points
-        Sphere sphere = new Sphere(1, new Point(0,0,-3));
-        List<Point> results = sphere.findIntsersections(new Ray(new Point(0,0,0), cm1.getVTo()));
+        Sphere sphere = new Sphere(new Point(0,0,-3), 1);
+        List<Point> results = sphere.findIntersections(new Ray(new Point(0,0,0), cm1.getVTo()));
         assertEquals(2, results.size(), "Wrong number of points");
     }
 
     //TC02: Test for central ray
+    @Test
     public void testCentralRay()
     {
         Ray expectedRay = new Ray(new Point(0, 0, 0.5), new Vector(0, 0, -1));
@@ -62,8 +63,8 @@ public class cameraIntegrationTests {
         for (int i = 0; i <= 2; i++) {
             for (int j = 0; j <= 2; j++) {
                 Ray ray = camera.constructRay(3, 3, j, i);
-                if (geometry.findIntsersections(ray) != null) {
-                    points += geometry.findIntsersections(ray).size();
+                if (geometry.findIntersections(ray) != null) {
+                    points += geometry.findIntersections(ray).size();
                 }
             }
         }
@@ -81,7 +82,7 @@ public class cameraIntegrationTests {
         camera.setVPDistance(1);
 
         // TC01: small sphere in front of view plane(2 points)
-        Sphere sphere = new Sphere(1, new Point(0, 0, -3));
+        Sphere sphere = new Sphere(new Point(0, 0, -3), 1);
         assertEquals(2, findNumberOfIntersecions(camera, sphere), "wrong number of intersection points ");
 
         camera = new Camera(new Point(0, 0, 0.5), new Vector(0, -1, 0), new Vector(0, 0, -1));
@@ -89,15 +90,15 @@ public class cameraIntegrationTests {
         camera.setVPDistance(1);
 
         // TC02: big sphere in front of view plane(18 points)
-        sphere = new Sphere(2.5, new Point(0, 0, -2.5));
+        sphere = new Sphere(new Point(0, 0, -2.5), 2.5);
         assertEquals(18, findNumberOfIntersecions(camera, sphere), "wrong number of intersection points ");
 
         // TC03: the corners rays of the view plane doesn't cross the sphere  (10 points)
-        sphere = new Sphere(2, new Point(0, 0, -2));
+        sphere = new Sphere(new Point(0, 0, -2), 2);
         assertEquals(10, findNumberOfIntersecions(camera, sphere), "wrong number of intersection points ");
 
         // TC04: sphere behind the view plane (0 points)
-        sphere = new Sphere(0.5, new Point(0, 0, 1));
+        sphere = new Sphere(new Point(0, 0, 1), 0.5);
         assertEquals(0, findNumberOfIntersecions(camera, sphere), "wrong number of intersection points ");
 
 

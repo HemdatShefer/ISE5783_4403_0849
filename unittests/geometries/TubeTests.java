@@ -13,7 +13,7 @@ class TubeTests {
         // ============ Equivalence Partitions Tests ==============
         //TC01: Test for a proper result
         try {
-            new Tube(1,new Ray(new Point(1, 2, 3), new Vector(1, 5, 4)));
+            new Tube(new Ray(new Point(1, 2, 3), new Vector(1, 5, 4)), 1);
         } catch (IllegalArgumentException error) {
             throw new IllegalArgumentException("Failed constructor of the correct Tube");
         }
@@ -21,13 +21,13 @@ class TubeTests {
         // =============== Boundary Values Tests ==================
         //TC02: Test when the radius 0
         try {
-            new Tube(0,new Ray(new Point(1, 2, 3), new Vector(1, 5, 4)));
+            new Tube(new Ray(new Point(1, 2, 3), new Vector(1, 5, 4)), 0);
         } catch (IllegalArgumentException ignored) {
             fail("Constructed a Tube while a radius can not be 0");
         }
         //TC03:Test when the radius negative, -1
         try {
-            new Tube(-1,new Ray(new Point(1, 2, 3), new Vector(1, 5, 4)));
+            new Tube(new Ray(new Point(1, 2, 3), new Vector(1, 5, 4)), -1);
         } catch (IllegalArgumentException ignored) {
             fail("Constructed a Tube while a radius can not be negative");
         }

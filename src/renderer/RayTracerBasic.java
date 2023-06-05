@@ -32,6 +32,14 @@ public class RayTracerBasic extends RayTracerBase {
     }
     private Color calcColor(Point point)
     {
-        return scene.getAmbientLight().getIntensity();
+        Color ambientColor = scene.getAmbientLight().getIntensity();
+        Color objectColor = getColorAtPoint(point);
+        return ambientColor.add(objectColor);
+
+    }
+
+    private Color getColorAtPoint(Point point)
+    {
+        return null;
     }
 }

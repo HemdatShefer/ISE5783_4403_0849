@@ -192,6 +192,76 @@ public class Camera {
             }
         }
     }
+
+    public Point getLocation() {
+        return location;
+    }
+
+    public Camera setLocation(Point location) {
+        this.location = location;
+        return this;
+    }
+
+    public Vector getvTo() {
+        return vTo;
+    }
+
+    public Camera setvTo(Vector vTo) {
+        this.vTo = vTo;
+        return this;
+    }
+
+    public Vector getvUp() {
+        return vUp;
+    }
+
+    public Camera setvUp(Vector vUp) {
+        this.vUp = vUp;
+        return this;
+    }
+
+    public Vector getvRight() {
+        return vRight;
+    }
+
+    public Camera setvRight(Vector vRight) {
+        this.vRight = vRight;
+        return this;
+    }
+
+    public Camera setWidth(double width) {
+        this.width = width;
+        return this;
+    }
+
+    public Camera setHeight(double height) {
+        this.height = height;
+        return this;
+    }
+
+    public Camera setDistance(double distance) {
+        this.distance = distance;
+        return this;
+    }
+
+    public ImageWriter getImageWriter() {
+        return imageWriter;
+    }
+
+    public Camera setImageWriter(ImageWriter imageWriter) {
+        this.imageWriter = imageWriter;
+        return this;
+    }
+
+    public RayTracerBase getRayTracer() {
+        return rayTracer;
+    }
+
+    public Camera setRayTracer(RayTracerBase rayTracer) {
+        this.rayTracer = rayTracer;
+        return this;
+    }
+
     public void writeToImage()
     {
         if(imageWriter == null)
