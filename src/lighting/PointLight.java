@@ -8,7 +8,7 @@ public class PointLight extends Light
 {
     private Point position;
     private double kC=1,kL=0,kO=0;
-    protected PointLight(Color intensity, Point point)
+    public PointLight(Color intensity, Point point)
     {
         super(intensity);
         position = point;
@@ -29,8 +29,15 @@ public class PointLight extends Light
         return this;
     }
 
-    public PointLight setkO(double kO) {
+    public PointLight setKq(double kO) {
         this.kO = kO;
         return this;
     }
+
+    public Object setKl(double v)
+    {
+        this.kL = kL;
+        return this;
+    }
+
 }
