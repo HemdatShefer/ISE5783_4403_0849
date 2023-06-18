@@ -2,14 +2,12 @@ package lighting;
 
 import primitives.Color;
 import primitives.Point;
-import primitives.Vector;
 
-public class PointLight extends Light
-{
+public class PointLight extends Light {
     private Point position;
-    private double kC=1,kL=0,kO=0;
-    public PointLight(Color intensity, Point point)
-    {
+    private double kC = 1, kL = 0, kO = 0;
+
+    public PointLight(Color intensity, Point point) {
         super(intensity);
         position = point;
     }
@@ -34,8 +32,7 @@ public class PointLight extends Light
         return this;
     }
 
-    public Object setKl(double v)
-    {
+    public Object setKl(double v) {
         this.kL = kL;
         return this;
     }

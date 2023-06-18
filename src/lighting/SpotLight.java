@@ -4,17 +4,15 @@ import primitives.Color;
 import primitives.Point;
 import primitives.Vector;
 
-public class SpotLight extends PointLight
-{
+public class SpotLight extends PointLight {
     private Vector direction;
-    public SpotLight(Color intensity, Point sphereLightPosition, Vector vector)
-    {
+
+    public SpotLight(Color intensity, Point sphereLightPosition, Vector vector) {
         super(intensity, vector);////////
-        direction=vector;
+        direction = vector;
     }
 
-    public PointLight setNarrowBeam(int i)
-    {
+    public PointLight setNarrowBeam(int i) {
         return this;
     }
 }

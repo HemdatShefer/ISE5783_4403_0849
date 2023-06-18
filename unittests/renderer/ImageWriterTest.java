@@ -2,10 +2,6 @@ package renderer;
 
 import org.junit.jupiter.api.Test;
 
-import java.awt.Color;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 class ImageWriterTest {
 
     @Test
@@ -27,19 +23,18 @@ class ImageWriterTest {
         imageWriter.writeToImage();
     }
     /**
-    @Test
-    void writePixel() {
-        ImageWriter imageWriter = new ImageWriter("testImage", 800, 500);
+     @Test void writePixel() {
+     ImageWriter imageWriter = new ImageWriter("testImage", 800, 500);
 
-        // Write a specific pixel
-        int xIndex = 400;
-        int yIndex = 250;
-        primitives.Color expectedColor = new primitives.Color(255, 255, 0); // Yellow color
-        imageWriter.writePixel(xIndex, yIndex, expectedColor);
+     // Write a specific pixel
+     int xIndex = 400;
+     int yIndex = 250;
+     primitives.Color expectedColor = new primitives.Color(255, 255, 0); // Yellow color
+     imageWriter.writePixel(xIndex, yIndex, expectedColor);
 
-        // Check if the pixel color is as expected
-          primitives.Color actualColor = new primitives.Color(imageWriter.getImage().getRGB(xIndex, yIndex));
-        assertEquals(expectedColor, actualColor);
-    }
-    **/
+     // Check if the pixel color is as expected
+     primitives.Color actualColor = new primitives.Color(imageWriter.getImage().getRGB(xIndex, yIndex));
+     assertEquals(expectedColor, actualColor);
+     }
+     **/
 }

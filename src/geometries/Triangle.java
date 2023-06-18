@@ -1,18 +1,20 @@
 /**
-
- The Triangle class represents a triangle in 3D space.
- It extends the Polygon class and inherits its methods for calculating area and checking if a point is inside the triangle.
- It also provides a method for getting the normal vector at a point on the surface.
+ * The Triangle class represents a triangle in 3D space.
+ * It extends the Polygon class and inherits its methods for calculating area and checking if a point is inside the triangle.
+ * It also provides a method for getting the normal vector at a point on the surface.
  */
 package geometries;
-import primitives.*;
+
+import primitives.Point;
+import primitives.Ray;
+import primitives.Vector;
 
 import java.util.List;
 
 import static primitives.Util.isZero;
 
 
-public class Triangle extends Polygon{
+public class Triangle extends Polygon {
     /**
      * Constructs a triangle with the specified three points.
      * @param point0 the first vertex of the triangle
@@ -20,7 +22,7 @@ public class Triangle extends Polygon{
      * @param point2 the third vertex of the triangle
      */
     final Point point0;
-    final  Point point1;
+    final Point point1;
     final Point point2;
 
     /**
@@ -45,11 +47,16 @@ public class Triangle extends Polygon{
      */
     @Override
     public Vector getNormal(Point point) {
-        return null;
+        return plane.getNormal();
     }
+
     @Override
-    public List<Point> findIntersections(Ray ray)
-    {
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+        List<Point> planeIntersections = plane.findIntersections(ray);
+
+        if(planeIntersections == null)
+            return null;
+
         Vector v1 = vertices.get(0).subtract(ray.getP0());
         Vector v2 = vertices.get(1).subtract(ray.getP0());
         Vector v3 = vertices.get(2).subtract(ray.getP0());
@@ -62,18 +69,16 @@ public class Triangle extends Polygon{
         if (isZero(n1.dotProduct(ray.getDir())) || isZero(n2.dotProduct(ray.getDir())) || isZero(n3.dotProduct(ray.getDir())))
             return null;
 
-        if (n1.dotProduct(ray.getDir()) < 0)
-        {
+        if (n1.dotProduct(ray.getDir()) < 0) {
             if (n2.dotProduct(ray.getDir()) > 0 || n3.dotProduct(ray.getDir()) > 0)
                 return null;
         }
-        if (n1.dotProduct(ray.getDir()) > 0)
-        {
+        if (n1.dotProduct(ray.getDir()) > 0) {
             if (n2.dotProduct(ray.getDir()) < 0 || n3.dotProduct(ray.getDir()) < 0)
                 return null;
         }
 
-        return plane.findIntersections(ray);
+        return List.of(new GeoPoint(this,planeIntersections.get(0)));
     }
 
-    }
+}

@@ -11,6 +11,7 @@ public abstract class RayTracerBase {
 
     /**
      * Constructs a new RayTracerBase object with the given scene.
+     *
      * @param scene the scene to be rendered
      */
     public RayTracerBase(Scene scene) {
@@ -19,6 +20,7 @@ public abstract class RayTracerBase {
 
     /**
      * Traces a ray in the scene and computes the color.
+     *
      * @param ray the ray to be traced
      * @return the computed color of the traced ray
      */

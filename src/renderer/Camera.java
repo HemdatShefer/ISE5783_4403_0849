@@ -1,6 +1,9 @@
 package renderer;
 
-import primitives.*;
+import primitives.Color;
+import primitives.Point;
+import primitives.Ray;
+import primitives.Vector;
 
 import java.util.MissingResourceException;
 
@@ -11,14 +14,14 @@ import static primitives.Util.isZero;
  * its location (as a Point), and three direction vectors for the camera's forward,
  * up, and right directions. The class also includes fields for the height, width,
  * and distance of the plane view, relative to the camera.
- *
+ * <p>
  * The camera can construct rays through a pixel on the plane view and provides getter methods
  * for its properties. The camera's view plane size and distance can be modified with chaining
  * methods that return the camera object itself.
- *
+ * <p>
  * Also, it includes the method constructRayThroughPixel which constructs a ray passing through
  * a certain pixel on the view plane considering the screen distance and the screen size.
- *
+ * <p>
  * Note: This class assumes that the up and forward vectors are orthogonal.
  */
 public class Camera {
@@ -38,8 +41,8 @@ public class Camera {
      * The orthogonal vectors are then used to calculate the right direction vector.
      *
      * @param location the location of the camera in 3D space
-     * @param vTo the forward direction vector of the camera
-     * @param vUp the up direction vector of the camera
+     * @param vTo      the forward direction vector of the camera
+     * @param vUp      the up direction vector of the camera
      * @throws IllegalArgumentException if the direction vectors are not orthogonal and normalized
      */
 
@@ -56,7 +59,8 @@ public class Camera {
 
     /**
      * Sets the width and height of the plane view of the camera, and returns the camera itself.
-     * @param width the width of the plane view
+     *
+     * @param width  the width of the plane view
      * @param height the height of the plane view
      * @return the camera object itself
      */
@@ -68,6 +72,7 @@ public class Camera {
 
     /**
      * Sets the distance between the camera and the plane view, and returns the camera itself.
+     *
      * @param distance the distance between the camera and the plane view
      * @return the camera object itself
      */
@@ -83,8 +88,8 @@ public class Camera {
      *
      * @param nX The total number of pixels in the x-direction (width)
      * @param nY The total number of pixels in the y-direction (height)
-     * @param i The pixel's index in the x-direction
-     * @param j The pixel's index in the y-direction
+     * @param i  The pixel's index in the x-direction
+     * @param j  The pixel's index in the y-direction
      * @return A ray passing through the given pixel
      */
     public Ray constructRay(int nX, int nY, int j, int i) {
@@ -94,6 +99,7 @@ public class Camera {
 
     /**
      * Returns a string representation of the camera object.
+     *
      * @return a string representation of the camera object
      */
     @Override
@@ -108,13 +114,14 @@ public class Camera {
                 ", distance=" + distance +
                 '}';
     }
+
     public Ray constructRayThroughPixel(int Nx, int Ny, int i, int j, double screenDistance, double screenWidth, double screenHeight) {
         Point Pc = location.add(vTo.scale(screenDistance));
-        double Ry = screenHeight/Ny;
-        double Rx = screenWidth/Nx;
+        double Ry = screenHeight / Ny;
+        double Rx = screenWidth / Nx;
 
-        double yi = ((i - Ny/2.0)*Ry + Ry/2.0);
-        double xj = ((j - Nx/2.0)*Rx + Rx/2.0);
+        double yi = ((i - Ny / 2.0) * Ry + Ry / 2.0);
+        double xj = ((j - Nx / 2.0) * Rx + Rx / 2.0);
 
         Point Pij = Pc;
         if (!isZero(xj)) {
@@ -132,6 +139,7 @@ public class Camera {
 
     /**
      * Returns the forward direction vector of the camera.
+     *
      * @return the forward direction vector of the camera
      */
     public Vector getVTo() {
@@ -140,6 +148,7 @@ public class Camera {
 
     /**
      * Returns the up direction vector of the camera.
+     *
      * @return the up direction vector of the camera
      */
     public Vector getVUp() {
@@ -148,6 +157,7 @@ public class Camera {
 
     /**
      * Returns the right direction vector of the camera.
+     *
      * @return the right direction vector of the camera
      */
     public Vector getVRight() {
@@ -156,28 +166,45 @@ public class Camera {
 
     /**
      * Returns the width of the plane view of the camera.
+     *
      * @return the width of the plane view of the camera
      */
     public double getWidth() {
         return width;
     }
 
+    public Camera setWidth(double width) {
+        this.width = width;
+        return this;
+    }
+
     /**
      * Returns the height of the plane view of the camera.
+     *
      * @return the height of the plane view of the camera
      */
     public double getHeight() {
         return height;
     }
 
+    public Camera setHeight(double height) {
+        this.height = height;
+        return this;
+    }
+
     /**
      * Returns the distance between the camera and the plane view.
+     *
      * @return the distance between the camera and the plane view
      */
     public double getDistance() {
         return distance;
     }
 
+    public Camera setDistance(double distance) {
+        this.distance = distance;
+        return this;
+    }
 
     public void printGrid(int interval, Color color) {
         if (imageWriter == null)
@@ -229,21 +256,6 @@ public class Camera {
         return this;
     }
 
-    public Camera setWidth(double width) {
-        this.width = width;
-        return this;
-    }
-
-    public Camera setHeight(double height) {
-        this.height = height;
-        return this;
-    }
-
-    public Camera setDistance(double distance) {
-        this.distance = distance;
-        return this;
-    }
-
     public ImageWriter getImageWriter() {
         return imageWriter;
     }
@@ -262,24 +274,21 @@ public class Camera {
         return this;
     }
 
-    public void writeToImage()
-    {
-        if(imageWriter == null)
-        {
+    public void writeToImage() {
+        if (imageWriter == null) {
             throw new MissingResourceException("", "", "Camera is not initialized");
         }
         imageWriter.writeToImage();
 
     }
+
     public Camera renderImage() {
         if (location == null || vTo == null || vUp == null || vRight == null || distance == 0 || height == 0 || width == 0 || imageWriter == null || rayTracer == null)
             throw new MissingResourceException("", "", "Camera is not initialized");
         int nX = imageWriter.getNx();
         int nY = imageWriter.getNy();
-        for (int i = 0; i < nX; i++)
-        {
-            for (int j = 0; j < nY; j++)
-            {
+        for (int i = 0; i < nX; i++) {
+            for (int j = 0; j < nY; j++) {
                 Ray ray = constructRay(nX, nY, j, i);
                 Color pixelColor = rayTracer.traceRay(ray);
                 imageWriter.writePixel(j, i, pixelColor);

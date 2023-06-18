@@ -1,8 +1,12 @@
 package geometries;
 
 import org.junit.jupiter.api.Test;
-import primitives.*;
+import primitives.Point;
+import primitives.Ray;
+import primitives.Vector;
+
 import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class GeometriesTest {
@@ -12,7 +16,7 @@ class GeometriesTest {
         List<Point> result;
         Geometries geos = new Geometries(
                 new Plane(new Point(2, 0, 0), new Vector(-1, 1, 0)),
-                new Sphere(new Point(5,0,0), 2d),
+                new Sphere(new Point(5, 0, 0), 2d),
                 new Triangle(new Point(8.5, -1, 0), new Point(7.5, 1.5, 1), new Point(7.5, 1.5, -1))
         );
 

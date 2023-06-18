@@ -4,19 +4,21 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static primitives.Util.isZero;
 
 /**
-
- Plane class represents a two-dimensional plane in 3D Cartesian coordinate system.
+ * Plane class represents a two-dimensional plane in 3D Cartesian coordinate system.
  */
 public class Plane extends Geometry {
     private final Point vertex;
-    /** The vertex of the plane /
-     private Point vertex;
-     /* The normal vector to the plane */
+    /**
+     * The vertex of the plane /
+     * private Point vertex;
+     * /* The normal vector to the plane
+     */
     private final Vector normal;
 
     /**
@@ -34,7 +36,7 @@ public class Plane extends Geometry {
     /**
      * Constructs a Plane object by three points in space.
      *
-     * @param x  a point on the plane
+     * @param x a point on the plane
      * @param y another point on the plane
      * @param z a third point on the plane
      */
@@ -67,26 +69,17 @@ public class Plane extends Geometry {
     }
 
     @Override
-    public List<Point> findIntersections(Ray ray)
-    {
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
         if (isZero(normal.dotProduct(ray.getDir())))
             return null;
         if (vertex.equals(ray.getP0()))
             return null;
-        double t= (normal.dotProduct((vertex.subtract(ray.getP0()))))/(normal.dotProduct(ray.getDir()));
-        if (t<0|| isZero(t))
+        double t = (normal.dotProduct((vertex.subtract(ray.getP0())))) / (normal.dotProduct(ray.getDir()));
+        if (t < 0 || isZero(t))
             return null;
-        List<Point> res = new ArrayList<>();
-        res.add(ray.getPoint(t));
-        return res;
+
+        return List.of(new GeoPoint(this,ray.getPoint(t)));
     }
 
-    /**
-     * @param ray
-     * @return
-     */
-    @Override
-    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
-        return null;
-    }
+
 }

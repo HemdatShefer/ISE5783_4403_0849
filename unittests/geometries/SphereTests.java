@@ -40,11 +40,11 @@ class SphereTests {
         assertEquals(List.of(p1, p2), result, "Ray crosses sphere");
 
         // TC03: Ray starts inside the sphere (1 point)
-            Sphere sphere3 = new Sphere(new Point(0, 0, 0), 1d);
-            Ray ray3 = new Ray(new Point(0.5, 0.5, 0.5), new Vector(1, 1, 1));
-            List<Point> result3 = sphere.findIntersections(ray3);
-            assertEquals(1, result3.size(), "Wrong number of points");
-            assertEquals(new Point(0.866025, 0.866025, 0.866025), result3.get(0), "Wrong intersection point");
+        Sphere sphere3 = new Sphere(new Point(0, 0, 0), 1d);
+        Ray ray3 = new Ray(new Point(0.5, 0.5, 0.5), new Vector(1, 1, 1));
+        List<Point> result3 = sphere.findIntersections(ray3);
+        assertEquals(1, result3.size(), "Wrong number of points");
+        assertEquals(new Point(0.866025, 0.866025, 0.866025), result3.get(0), "Wrong intersection point");
 
 
         // TC04: Ray starts after the sphere (0 points)
@@ -52,7 +52,6 @@ class SphereTests {
         Ray ray4 = new Ray(new Point(2, 2, 2), new Vector(1, 1, 1));
         List<Point> result4 = sphere.findIntersections(ray4);
         assertTrue(result4.isEmpty(), "Expected no intersection points");
-
 
 
         // =============== Boundary Values Tests ==================

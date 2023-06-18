@@ -12,7 +12,7 @@ class VectorTests {
     Vector v3 = new Vector(0, 3, -2);
 
     @Test
-    void testZero(){
+    void testZero() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: Simple test
         try { // test zero vector
@@ -85,14 +85,14 @@ class VectorTests {
     }
 
 
-        @Test
-        void testNormalize() {
-            Vector v = new Vector(0, 3, 4);
-            Vector n = v.normalize();
-            // ============ Equivalence Partitions Tests ==============
-            // TC01: Simple test
-            assertEquals(1d, n.lengthSquared(), 0.00001, "wrong normalized vector length");
-            assertThrows(IllegalArgumentException.class, ()-> v.crossProduct(n), "normalized vector is not in the same direction");
-            assertEquals(new Vector(0, 0.6, 0.8), n, "wrong normalized vector");
-        }
+    @Test
+    void testNormalize() {
+        Vector v = new Vector(0, 3, 4);
+        Vector n = v.normalize();
+        // ============ Equivalence Partitions Tests ==============
+        // TC01: Simple test
+        assertEquals(1d, n.lengthSquared(), 0.00001, "wrong normalized vector length");
+        assertThrows(IllegalArgumentException.class, () -> v.crossProduct(n), "normalized vector is not in the same direction");
+        assertEquals(new Vector(0, 0.6, 0.8), n, "wrong normalized vector");
+    }
 }

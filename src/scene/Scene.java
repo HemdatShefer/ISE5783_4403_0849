@@ -17,27 +17,40 @@ public class Scene {
     public Color background = Color.BLACK;
     public AmbientLight ambientLight = AmbientLight.NONE;
     public Geometries geometries = new Geometries();
-
-    public Scene setLights(List<LightSource> lights) {
-        this.lights = lights;
-        return this;
-    }
-
     public List<LightSource> lights;
+
     /**
      * Constructs a new Scene object with the specified name.
+     *
      * @param name the name of the scene
      */
     public Scene(String name) {
         this.name = name;
     }
 
-    public AmbientLight getAmbientLight()
-    {
+    public Scene setLights(List<LightSource> lights) {
+        this.lights = lights;
+        return this;
+    }
+
+    public AmbientLight getAmbientLight() {
         return ambientLight;
     }
+
+    /**
+     * Sets the ambient light of the scene.
+     *
+     * @param ambientLight the ambient light to be set
+     * @return the current scene object
+     */
+    public Scene setAmbientLight(AmbientLight ambientLight) {
+        this.ambientLight = ambientLight;
+        return this;
+    }
+
     /**
      * Sets the background color of the scene using a string representation.
+     *
      * @param backgroundStr the string representation of the background color
      * @return the current scene object
      */
@@ -48,6 +61,7 @@ public class Scene {
 
     /**
      * Sets the background color of the scene using a Color object.
+     *
      * @param backgroundColor the background color
      * @return the current scene object
      */
@@ -58,6 +72,7 @@ public class Scene {
 
     /**
      * Sets the ambient light of the scene using the ambient color and coefficient.
+     *
      * @param iA the ambient color of the light
      * @param kA the ambient coefficient of the light
      * @return the current scene object
@@ -69,6 +84,7 @@ public class Scene {
 
     /**
      * Sets the geometries of the scene.
+     *
      * @param geometries the geometries to be added to the scene
      * @return the current scene object
      */
@@ -78,22 +94,11 @@ public class Scene {
     }
 
     /**
-     * Sets the ambient light of the scene.
-     * @param ambientLight the ambient light to be set
-     * @return the current scene object
-     */
-    public Scene setAmbientLight(AmbientLight ambientLight) {
-        this.ambientLight = ambientLight;
-        return this;
-    }
-
-    /**
      * Adds a geometry to the scene.
      *
      * @param geometry the geometry to add
      */
-    public void addGeometry(Geometry geometry)
-    {
+    public void addGeometry(Geometry geometry) {
         geometries.add(geometry);
     }
 }

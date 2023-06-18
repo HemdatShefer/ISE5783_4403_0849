@@ -26,6 +26,12 @@ public abstract class Intersectable {
                         .toList();
     }
 
+    public final List<GeoPoint> findGeoIntersections(Ray ray) {
+        return findGeoIntersectionsHelper(ray);
+    }
+
+    protected abstract List<GeoPoint> findGeoIntersectionsHelper(Ray ray);
+
     /**
      * Represents a point on a geometry object.
      */
@@ -39,6 +45,17 @@ public abstract class Intersectable {
          * The point on the geometry object.
          */
         public Point point;
+
+        /**
+         * Constructs a new GeoPoint with the specified geometry and point.
+         *
+         * @param geometry the geometry object
+         * @param point    the point on the geometry object
+         */
+        public GeoPoint(Geometry geometry, Point point) {
+            this.geometry = geometry;
+            this.point = point;
+        }
 
         @Override
         public boolean equals(Object o) {
@@ -55,22 +72,5 @@ public abstract class Intersectable {
                     '}';
         }
 
-        /**
-         * Constructs a new GeoPoint with the specified geometry and point.
-         *
-         * @param geometry the geometry object
-         * @param point    the point on the geometry object
-         */
-        public GeoPoint(Geometry geometry, Point point) {
-            this.geometry = geometry;
-            this.point = point;
-        }
-
     }
-
-    public List<GeoPoint> findGeoIntersections(Ray ray) {
-        return findGeoIntersectionsHelper(ray);
-    }
-
-    protected abstract List<GeoPoint> findGeoIntersectionsHelper(Ray ray) ;
 }

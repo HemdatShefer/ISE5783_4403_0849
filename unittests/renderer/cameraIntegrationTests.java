@@ -15,47 +15,45 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class cameraIntegrationTests {
     // ============ Equivalence Partitions Tests ==============
-    Camera cm = new Camera(new Point(0,0,0.5), new Vector(0,1,0), new Vector(0,0,-1));
-    Camera cm1 = new Camera(new Point(0,0,0), new Vector(0,1,0), new Vector(0,0,-1));
+    Camera cm = new Camera(new Point(0, 0, 0.5), new Vector(0, 1, 0), new Vector(0, 0, -1));
+    Camera cm1 = new Camera(new Point(0, 0, 0), new Vector(0, 1, 0), new Vector(0, 0, -1));
+
     //TC01 : small Sphere
-    public void testSmallSphere()
-    {
+    public void testSmallSphere() {
         //TC01: Small Sphere 2 points
-        Sphere sphere = new Sphere(new Point(0,0,-3), 1);
-        List<Point> results = sphere.findIntersections(new Ray(new Point(0,0,0), cm1.getVTo()));
+        Sphere sphere = new Sphere(new Point(0, 0, -3), 1);
+        List<Point> results = sphere.findIntersections(new Ray(new Point(0, 0, 0), cm1.getVTo()));
         assertEquals(2, results.size(), "Wrong number of points");
     }
 
     //TC02: Test for central ray
     @Test
-    public void testCentralRay()
-    {
+    public void testCentralRay() {
         Ray expectedRay = new Ray(new Point(0, 0, 0.5), new Vector(0, 0, -1));
         Ray actualRay = cm.constructRayThroughPixel(3, 3, 1, 1, 1, 6, 6);
         assertEquals(expectedRay, actualRay, "Central ray not as expected");
     }
 
     //TC03: Test for corner rays
-    public void testCornerRays()
-    {
+    public void testCornerRays() {
         Ray expectedRay = new Ray(new Point(0, 0, 0.5), new Vector(-2, -2, -1));
         Ray actualRay = cm.constructRayThroughPixel(3, 3, 0, 0, 1, 6, 6);
         assertEquals(expectedRay, actualRay, "Corner ray not as expected");
     }
 
     //TC04: Test for edge rays
-    public void testEdgeRays()
-    {
+    public void testEdgeRays() {
         Ray expectedRay = new Ray(new Point(0, 0, 0.5), new Vector(0, -2, -1));
         Ray actualRay = cm.constructRayThroughPixel(3, 3, 1, 0, 1, 6, 6);
         assertEquals(expectedRay, actualRay, "Edge ray not as expected");
     }
+
     /**
      * Counts the number of intersections between the specified camera and geometry.
      *
-     * @param camera    the camera used to generate rays
-     * @param geometry  the geometry to test for intersections
-     * @return          the total number of intersection points found
+     * @param camera   the camera used to generate rays
+     * @param geometry the geometry to test for intersections
+     * @return the total number of intersection points found
      * @throws IllegalAccessException if the intersection calculation fails
      */
     int findNumberOfIntersecions(Camera camera, Geometry geometry) throws IllegalAccessException {
@@ -103,6 +101,7 @@ class cameraIntegrationTests {
 
 
     }
+
     /**
      * Test method for {@link renderer.Camera#constructRay(int, int, int, int)}.
      */

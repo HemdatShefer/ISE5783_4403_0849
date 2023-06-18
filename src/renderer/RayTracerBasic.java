@@ -26,20 +26,18 @@ public class RayTracerBasic extends RayTracerBase {
      * @return the computed color of the traced ray
      */
     @Override
-    public Color traceRay(Ray ray)
-    {
+    public Color traceRay(Ray ray) {
         return null; // Placeholder implementation
     }
-    private Color calcColor(Point point)
-    {
+
+    private Color calcColor(Point point) {
         Color ambientColor = scene.getAmbientLight().getIntensity();
         Color objectColor = getColorAtPoint(point);
         return ambientColor.add(objectColor);
 
     }
 
-    private Color getColorAtPoint(Point point)
-    {
+    private Color getColorAtPoint(Point point) {
         return null;
     }
 }

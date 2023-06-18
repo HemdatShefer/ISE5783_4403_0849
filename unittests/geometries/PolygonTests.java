@@ -1,24 +1,19 @@
 package geometries;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
-import static primitives.Util.isZero;
-
 import org.junit.jupiter.api.Test;
-
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
-/** Testing Polygons
- * @author Dan */
-public class PolygonTests {
+import static org.junit.jupiter.api.Assertions.*;
+import static primitives.Util.isZero;
 
-    /** Test method for {@link geometries.Polygon#Polygon(primitives.Point...)}. */
+/**
+ * Testing Polygons
+ *
+ * @author Dan
+ */
+public class PolygonTests {
     @Test
     public void testConstructor() {
         // ============ Equivalence Partitions Tests ==============
@@ -66,13 +61,15 @@ public class PolygonTests {
 
     }
 
-    /** Test method for {@link Geometry#getNormal(Point)}. */
+    /**
+     * Test method for {@link Geometry#getNormal(Point)}.
+     */
     @Test
     public void testGetNormal() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: There is a simple single test here - using a quad
         Point[] pts =
-                { new Point(0, 0, 1), new Point(1, 0, 0), new Point(0, 1, 0), new Point(-1, 1, 1) };
+                {new Point(0, 0, 1), new Point(1, 0, 0), new Point(0, 1, 0), new Point(-1, 1, 1)};
         Polygon pol = new Polygon(pts);
         // ensure there are no exceptions
         assertDoesNotThrow(() -> pol.getNormal(new Point(0, 0, 1)), "");
@@ -85,9 +82,10 @@ public class PolygonTests {
             assertTrue(isZero(result.dotProduct(pts[i].subtract(pts[i == 0 ? 3 : i - 1]))),
                     "Polygon's normal is not orthogonal to one of the edges");
     }
+
     @Test
     public void testFindIntsersectionPoints() {
-        Triangle tr = new Triangle(new Point(1,0,1), new Point(0,1,1), new Point(0,0,-1));
+        Triangle tr = new Triangle(new Point(1, 0, 1), new Point(0, 1, 1), new Point(0, 0, -1));
         // ============ Equivalence Partitions Tests ==============
 
         //**** Group: The Ray must be neither orthogonal nor parallel to the plane

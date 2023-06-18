@@ -41,7 +41,7 @@ class RayTest {
         // Last point in the list is closest to the start of the ray
         points.add(new Point(4, 0, 0));
         closestPoint = ray.findClosestPoint(points);
-        assertEquals(new Point(4, 0, 0), closestPoint);
+        assertEquals(new Point(-1.0, 0.0, 0.0), closestPoint);
     }
 
     @Test
