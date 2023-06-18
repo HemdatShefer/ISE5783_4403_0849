@@ -1,4 +1,4 @@
-package unittests.renderer;
+package renderer;
 
 import geometries.Sphere;
 import geometries.Triangle;
@@ -8,9 +8,6 @@ import primitives.Color;
 import primitives.Double3;
 import primitives.Point;
 import primitives.Vector;
-import renderer.Camera;
-import renderer.ImageWriter;
-import renderer.RayTracerBasic;
 import scene.Scene;
 
 import static java.awt.Color.*;
@@ -20,7 +17,7 @@ import static java.awt.Color.*;
  *
  * @author Dan
  */
-public class RenderTests {
+public class renderTests {
 
     /**
      * Produce a scene with basic 3D model and render it into a png image with a

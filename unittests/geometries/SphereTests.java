@@ -20,7 +20,6 @@ class SphereTests {
     }
 
     /**
-     * Test method for {@link Sphere#findIntsersections(Ray)}.
      */
     @Test
     public void testFindIntersectionPoints() {
