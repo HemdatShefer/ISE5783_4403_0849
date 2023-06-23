@@ -2,39 +2,67 @@ package lighting;
 
 import primitives.Color;
 import primitives.Point;
+import primitives.Vector;
 
-public class PointLight extends Light {
-    private Point position;
-    private double kC = 1, kL = 0, kO = 0;
+public class PointLight extends Light implements LightSource{
+    protected final Point position;
+    private double kC;
+    private double kL;
+    private double kQ;
 
-    public PointLight(Color intensity, Point point) {
+    /**
+     * Default constructor for PointLight class.
+     * @param intensity Color of the light.
+     * @param position Position of the light.
+     */
+    public PointLight(Color intensity, Point position) {
         super(intensity);
-        position = point;
-    }
-
-    public PointLight setPosition(Point position) {
         this.position = position;
-        return this;
+        this.kC = 1d;
+        this.kL = 0d;
+        this.kQ = 0d;
     }
 
-    public PointLight setkC(double kC) {
+    public PointLight setKC(double kC) {
         this.kC = kC;
         return this;
     }
 
-    public PointLight setkL(double kL) {
+    public PointLight setKL(double kL) {
         this.kL = kL;
         return this;
     }
 
-    public PointLight setKq(double kO) {
-        this.kO = kO;
+    public PointLight setKQ(double kQ) {
+        this.kQ = kQ;
         return this;
     }
 
-    public Object setKl(double v) {
-        this.kL = kL;
-        return this;
+    /**
+     * Calculates the factor to reduce the intensity of the light.
+     * @param point Point to calculate the factor for.
+     * @return Factor to reduce the intensity of the light.
+     */
+    protected double getReduceFactor(Point point) {
+        double distance = position.distance(point);
+        return kC + kL * distance + kQ * distance * distance;
     }
 
+    @Override
+    public Color getIntensity(Point point) {
+        return getIntensity().reduce(getReduceFactor(point));
+    }
+
+    @Override
+    public Vector getL(Point point) {
+        if (point == null) {
+            return null;
+        }
+        return point.subtract(position).normalize();
+    }
+
+    @Override
+    public double getDistance(Point point) {
+        return position.distance(point);
+    }
 }

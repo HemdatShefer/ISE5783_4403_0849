@@ -1,84 +1,71 @@
-/**
- * The Triangle class represents a triangle in 3D space.
- * It extends the Polygon class and inherits its methods for calculating area and checking if a point is inside the triangle.
- * It also provides a method for getting the normal vector at a point on the surface.
- */
 package geometries;
 
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
-
 import java.util.List;
 
-import static primitives.Util.isZero;
 
-
-public class Triangle extends Polygon {
-    /**
-     * Constructs a triangle with the specified three points.
-     * @param point0 the first vertex of the triangle
-     * @param point1 the second vertex of the triangle
-     * @param point2 the third vertex of the triangle
-     */
-    final Point point0;
-    final Point point1;
-    final Point point2;
+/**
+ * Class describe triangle, polygon with 3 points.
+ */
+public class Triangle extends geometries.Polygon {
 
     /**
-     * Constructs a new Triangle object with the specified points.
-     *
-     * @param point0 The first Point of the triangle.
-     * @param point1 The second Point of the triangle.
-     * @param point2 The third Point of the triangle.
+     * Constructor create triangle from 3 points.
+     * @param p1 first point
+     * @param p2 second point
+     * @param p3 third point
+     * @throws IllegalArgumentException if the points can't create triangle (same points etc.)
      */
-    public Triangle(Point point0, Point point1, Point point2) {
-        super(point0, point1, point2);
-        this.point0 = point0;
-        this.point1 = point1;
-        this.point2 = point2;
+    public Triangle(Point p1, Point p2, Point p3) {
+        super(p1, p2, p3);
     }
 
-
-    /**
-     * Computes and returns the normal vector at the specified point on the surface of the triangle.
-     * @param point a point on the surface of the triangle
-     * @return the normal vector at the specified point on the surface of the triangle
-     */
     @Override
     public Vector getNormal(Point point) {
-        return plane.getNormal();
+        return super.getNormal(point);
     }
 
     @Override
-    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
-        List<Point> planeIntersections = plane.findIntersections(ray);
-
-        if(planeIntersections == null)
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+        /* If ray doesn't intersect the plan consist in triangle return null */
+        List<GeoPoint> planeGeoIntersectionsHelper = plane.findGeoIntersectionsHelper(ray);
+        if (planeGeoIntersectionsHelper == null) {
             return null;
-
-        Vector v1 = vertices.get(0).subtract(ray.getP0());
-        Vector v2 = vertices.get(1).subtract(ray.getP0());
-        Vector v3 = vertices.get(2).subtract(ray.getP0());
-
-        Vector n1 = v1.crossProduct(v2);
-        Vector n2 = v2.crossProduct(v3);
-        Vector n3 = v3.crossProduct(v1);
-
-        // The point is on edge's continuation.
-        if (isZero(n1.dotProduct(ray.getDir())) || isZero(n2.dotProduct(ray.getDir())) || isZero(n3.dotProduct(ray.getDir())))
-            return null;
-
-        if (n1.dotProduct(ray.getDir()) < 0) {
-            if (n2.dotProduct(ray.getDir()) > 0 || n3.dotProduct(ray.getDir()) > 0)
-                return null;
         }
-        if (n1.dotProduct(ray.getDir()) > 0) {
-            if (n2.dotProduct(ray.getDir()) < 0 || n3.dotProduct(ray.getDir()) < 0)
-                return null;
-        }
+        List<GeoPoint> result = null;
+        Vector vector, vector1, vector2, vector3;
+        Vector normal1, normal2, normal3;
+        Point point1, point2, point3;
+        boolean isThereIntersections;
 
-        return List.of(new GeoPoint(this,planeIntersections.get(0)));
+        vector = ray.getDir();
+
+        point1 = vertices.get(0);
+        point2 = vertices.get(1);
+        point3 = vertices.get(2);
+
+        /* Otherwise, check if ray intersect the triangle */
+        vector1 = point1.subtract(ray.getP0());
+        vector2 = point2.subtract(ray.getP0());
+        vector3 = point3.subtract(ray.getP0());
+
+        normal1 = vector1.crossProduct(vector2);
+        normal2 = vector2.crossProduct(vector3);
+        normal3 = vector3.crossProduct(vector1);
+
+        isThereIntersections = vector.dotProduct(normal1) > 0 && vector.dotProduct(normal2) > 0 &&
+                vector.dotProduct(normal3) > 0;
+
+        isThereIntersections = isThereIntersections ||
+                vector.dotProduct(normal1) < 0 && vector.dotProduct(normal2) < 0 &&
+                        vector.dotProduct(normal3) < 0;
+
+        if (isThereIntersections) {
+            result = planeGeoIntersectionsHelper;
+            result.get(0).setGeometry(this);
+        }
+        return result;
     }
-
 }

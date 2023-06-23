@@ -1,5 +1,8 @@
 package primitives;
 
+import java.util.List;
+import java.util.stream.IntStream;
+
 /**
  * Wrapper class for java.awt.Color. The constructors operate with any
  * non-negative RGB values. The colors are maintained without an upper limit of
@@ -13,6 +16,12 @@ public class Color {
      * Black color = (0,0,0)
      */
     public static final Color BLACK = new Color();
+    public static final Color GREEN = new Color(0, 255, 0);
+    public static final Color YELLOW = new Color(255, 255, 0);
+    public static final Color RED = new Color(255, 0, 0);
+    public static final Color BLUE = new Color(0, 0, 255);
+    public static final double EPSILON = 0.1;
+
     /**
      * The internal fields to maintain RGB components as double numbers from 0 to
      * whatever...
@@ -34,7 +43,7 @@ public class Color {
      * @param g Green component
      * @param b Blue component
      */
-    public Color(double r, double g, double b) {
+    public Color(double r, double g, double b) throws IllegalArgumentException {
         if (r < 0 || g < 0 || b < 0)
             throw new IllegalArgumentException("Negative color component is illegal");
         rgb = new Double3(r, g, b);
@@ -46,31 +55,13 @@ public class Color {
      *
      * @param rgb triad of Red/Green/Blue components
      */
-    private Color(Double3 rgb) {
+    private Color(Double3 rgb) throws IllegalArgumentException {
         if (rgb.d1 < 0 || rgb.d2 < 0 || rgb.d3 < 0)
             throw new IllegalArgumentException("Negative color component is illegal");
         this.rgb = rgb;
     }
 
-    /**
-     * Constructor to generate a color according to a string representation.
-     *
-     * @param colorStr the string representation of the color
-     */
-    public Color(String colorStr) {
-        if (colorStr == null || colorStr.isEmpty()) {
-            throw new IllegalArgumentException("Color string cannot be null or empty");
-        }
-        // Parse the string and create a new Double3 object
-        String[] components = colorStr.split(",");
-        if (components.length != 3) {
-            throw new IllegalArgumentException("Color string should contain 3 components");
-        }
-        double r = Double.parseDouble(components[0]);
-        double g = Double.parseDouble(components[1]);
-        double b = Double.parseDouble(components[2]);
-        rgb = new Double3(r, g, b);
-    }
+
 
 
     /**
@@ -159,6 +150,21 @@ public class Color {
         if (k.d1 < 1.0 || k.d2 < 1.0 || k.d3 < 1.0)
             throw new IllegalArgumentException("Can't scale a color by a by a number lower than 1");
         return new Color(rgb.d1 / k.d1, rgb.d2 / k.d2, rgb.d3 / k.d3);
+    }
+
+    public static Color average(List<Color> colors, int total) {
+        Double3 averageValues;
+        Double3 sum = Double3.ZERO;
+        for (Color c : colors) {
+            sum = sum.add(c.rgb);
+        }
+        averageValues = sum.reduce(total);
+        return new Color(averageValues.d1, averageValues.d2, averageValues.d3);
+    }
+    public static boolean allEquals(List<Color> colors) {
+        return IntStream
+                .range(1, colors.size())
+                .allMatch(index -> colors.get(0).equals(colors.get(index)));
     }
 
     @Override

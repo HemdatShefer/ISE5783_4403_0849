@@ -1,65 +1,55 @@
 package geometries;
 
-import primitives.Point;
-import primitives.Ray;
-import primitives.Vector;
+import primitives.*;
 
 import java.util.List;
 
+import static primitives.Util.alignZero;
 import static primitives.Util.isZero;
-
+import primitives.Ray;
 /**
- * The Tube class represents a tube in 3D space.
- * It extends the RadialGeometry class and is defined by an axis ray and a radius.
+ * Class describe tube, the tube is infinity.
  */
-public class Tube extends RadialGeometry {
+public class Tube extends Geometry {
+
+    protected final Ray axisRay;
+    protected final double radius;
 
     /**
-     * The axis ray of the tube.
+     * Create tube.
+     * @param axisRay the ray contains the direction and the center point of the center
+     * @param radius the radius of the tube
+     * @throws IllegalArgumentException if the radius is negative or zero
      */
-    protected final Ray axiRay;
-
-    /**
-     * Constructs a new Tube object with the specified axis ray and radius.
-     *
-     * @param a The axis ray of the tube.
-     * @param b The radius of the tube.
-     */
-    public Tube(Ray a, double b) {
-        super(b);
-        axiRay = a;
+    public Tube(Ray axisRay, double radius) {
+        if (radius < 0 || Util.isZero(radius)) {
+            throw new IllegalArgumentException("Radius can't be zero or negative.");
+        }
+        this.axisRay = axisRay;
+        this.radius = radius;
     }
 
-    /**
-     * Returns the axis ray of the tube.
-     *
-     * @return The axis ray of the tube.
-     */
-    public Ray getAxiRay() {
-        return axiRay;
+    public Ray getAxisRay() {
+        return axisRay;
     }
 
-    /**
-     * @param p A point on the tube's sereface
-     * @return The normal vector at the point
-     */
+    public double getRadius() {
+        return radius;
+    }
+
     @Override
-    public Vector getNormal(Point p) {
-        double t = axiRay.getDir().dotProduct(p.subtract(axiRay.getP0()));
-        if (isZero(t))
-            return p.subtract(axiRay.getP0()).normalize();
-        Point O = axiRay.getP0().add(axiRay.getDir().scale(t));
-        return p.subtract(O).normalize();
+    public Vector getNormal(Point point) {
+        Vector pMinusHead = point.subtract(axisRay.getP0());
+        double t = axisRay.getDir().dotProduct(pMinusHead);
+        /* Check if the point is "front" to the p0 the point in the base */
+        if (Util.isZero(t)) {
+            return pMinusHead.normalize();
+        }
+        /* The point on the side calculate the normal */
+        Point center = axisRay.getP0().add(axisRay.getDir().scale(t));
+        return point.subtract(center).normalize();
     }
 
-
-    /**
-     * Finds the intersections of a given ray with the geometry object.
-     * If no intersections are found, an empty list is returned.
-     *
-     * @param ray The ray to intersect with the geometry object
-     * @return A list of intersection points between the ray and the geometry object
-     */
     @Override
     public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
         return null;

@@ -2,11 +2,13 @@ package scene;
 
 import geometries.Geometries;
 import geometries.Geometry;
+import geometries.Intersectable;
 import lighting.AmbientLight;
 import lighting.LightSource;
 import primitives.Color;
 import primitives.Double3;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -14,91 +16,42 @@ import java.util.List;
  */
 public class Scene {
     public String name;
-    public Color background = Color.BLACK;
-    public AmbientLight ambientLight = AmbientLight.NONE;
-    public Geometries geometries = new Geometries();
+    public Color background;
+    public AmbientLight ambientLight;
+    public Geometries geometries;
     public List<LightSource> lights;
 
-    /**
-     * Constructs a new Scene object with the specified name.
-     *
-     * @param name the name of the scene
-     */
     public Scene(String name) {
         this.name = name;
+        background = Color.BLACK;
+        ambientLight = new AmbientLight();
+        geometries = new Geometries();
+        lights = new LinkedList<>();
     }
 
-    public Scene setLights(List<LightSource> lights) {
-        this.lights = lights;
+
+    public Scene setBackground(Color color) {
+        background = color;
         return this;
     }
 
-    public AmbientLight getAmbientLight() {
-        return ambientLight;
-    }
 
-    /**
-     * Sets the ambient light of the scene.
-     *
-     * @param ambientLight the ambient light to be set
-     * @return the current scene object
-     */
-    public Scene setAmbientLight(AmbientLight ambientLight) {
+    public Scene setAmbient(AmbientLight ambientLight) {
         this.ambientLight = ambientLight;
         return this;
     }
 
-    /**
-     * Sets the background color of the scene using a string representation.
-     *
-     * @param backgroundStr the string representation of the background color
-     * @return the current scene object
-     */
-    public Scene setBackground(String backgroundStr) {
-        this.background = new Color(backgroundStr);
+    public Scene addGeometry(Intersectable geometries) {
+        if (geometries != null) {
+            this.geometries.add(geometries);
+        }
         return this;
     }
 
-    /**
-     * Sets the background color of the scene using a Color object.
-     *
-     * @param backgroundColor the background color
-     * @return the current scene object
-     */
-    public Scene setBackground(Color backgroundColor) {
-        this.background = backgroundColor;
+    public Scene addLights(LightSource... lightSource) {
+        if (lightSource != null) {
+            lights.addAll(List.of(lightSource));
+        }
         return this;
-    }
-
-    /**
-     * Sets the ambient light of the scene using the ambient color and coefficient.
-     *
-     * @param iA the ambient color of the light
-     * @param kA the ambient coefficient of the light
-     * @return the current scene object
-     */
-    public Scene setAmbientLight(Color iA, Double3 kA) {
-        this.ambientLight = new AmbientLight(iA, kA);
-        return this;
-    }
-
-    /**
-     * Sets the geometries of the scene.
-     *
-     * @param geometries the geometries to be added to the scene
-     * @return the current scene object
-     */
-    public Scene setGeometries(Geometries geometries) {
-        this.geometries = geometries;
-        return this;
-    }
-
-    /**
-     * Adds a geometry to the scene.
-     *
-     * @param geometry the geometry to add
-     */
-    public void addGeometry(Geometry geometry) {
-        geometries.add(geometry);
     }
 }

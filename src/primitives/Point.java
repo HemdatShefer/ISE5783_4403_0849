@@ -37,6 +37,25 @@ public class Point {
         this.xyz = xyz;
     }
 
+
+
+    public Double3 getXYZ() {
+        return xyz;
+    }
+
+    public double getX() {
+        return xyz.d1;
+    }
+
+    public double getY() {
+        return xyz.d2;
+    }
+
+    public double getZ() {
+        return xyz.d3;
+    }
+
+
     /**
      * Adds the given vector to this point and returns the resulting point.
      *
@@ -53,7 +72,8 @@ public class Point {
      * @param other the point to subtract from this point
      * @return the resulting vector after subtracting the other point
      */
-    public Vector subtract(Point other) {
+    public Vector subtract(Point other)throws IllegalArgumentException
+    {
         return new Vector(xyz.subtract(other.xyz));
     }
 
@@ -112,8 +132,6 @@ public class Point {
     }
 
 
-    public double getX() {
-        return 0;
-    }
+
 
 }

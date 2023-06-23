@@ -1,47 +1,73 @@
 package geometries;
 
+import static primitives.Util.alignZero;
+
+import geometries.Geometry;
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
-
+import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Class describe sphere.
+ */
 public class Sphere extends Geometry {
-    private Point center;
-    private double radius;
 
-    public Sphere(Point c, double r) {
-        radius = r;
-        center = c;
+    private final Point center;
+    private final double radius;
+
+    public Sphere(Point center, double radius) {
+        this.center = center;
+        this.radius = radius;
     }
 
+    public Point getCenter() {
+        return center;
+    }
 
-    /**
-     * Computes and returns the normal vector at the specified point on the surface of the sphere.
-     *
-     * @param point a point on the surface of the sphere
-     * @return the normal vector at the specified point on the surface of the sphere
-     */
+    public double getRadius() {
+        return radius;
+    }
+
     @Override
     public Vector getNormal(Point point) {
-        return null;
+        return point.subtract(center).normalize();
     }
 
-
-    /**
-     * Finds the intersections of a given ray with the geometry object.
-     * If no intersections are found, an empty list is returned.
-     *
-     * @param ray The ray to intersect with the geometry object
-     * @return A list of intersection points between the ray and the geometry object
-     */
-
-    /**
-     * @param ray
-     * @return
-     */
     @Override
-    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
-        return null;
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+        /* In case that p0 is same as center */
+        if (ray.getP0().equals(center)) {
+            return List.of(new GeoPoint(this, center.add(ray.getDir().scale(radius))));
+        }
+        List<GeoPoint> result = new LinkedList<>();
+        double tm, d, th, t1, t2;
+        Point p0 = ray.getP0();
+        Vector vector = ray.getDir();
+        Vector u;
+
+        u = center.subtract(ray.getP0());
+        tm = alignZero(vector.dotProduct(u));
+        d = alignZero(Math.sqrt(alignZero(u.lengthSquared() - tm * tm)));
+        th = alignZero(Math.sqrt(alignZero(radius * radius - d * d)));
+        t1 = alignZero(tm - th);
+        t2 = alignZero(tm + th);
+
+        /* Check if the ray direction is above the sphere */
+        if (d < radius) {
+            if (t1 > 0) {
+                Point p1 = p0.add(vector.scale(t1));
+                result.add(new GeoPoint(this, p1));
+            }
+            if (t2 > 0) {
+                Point p2 = p0.add(vector.scale(t2));
+                result.add(new GeoPoint(this, p2));
+            }
+        }
+
+        result = result.isEmpty() ? null : result;
+
+        return result;
     }
 }

@@ -4,16 +4,17 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
+import static primitives.Util.alignZero;
 import static primitives.Util.isZero;
 
 /**
  * Plane class represents a two-dimensional plane in 3D Cartesian coordinate system.
  */
 public class Plane extends Geometry {
-    private final Point vertex;
+    private final Point p0;
     /**
      * The vertex of the plane /
      * private Point vertex;
@@ -24,11 +25,11 @@ public class Plane extends Geometry {
     /**
      * Constructs a new Plane object with the specified vertex and normal.
      *
-     * @param vertex The Point representing the vertex of the plane.
+     * @param p0     The Point representing the vertex of the plane.
      * @param normal The Vector representing the normal of the plane.
      */
-    public Plane(Point vertex, Vector normal) {
-        this.vertex = vertex;
+    public Plane(Point p0, Vector normal) {
+        this.p0 = p0;
         this.normal = normal;
     }
 
@@ -44,7 +45,7 @@ public class Plane extends Geometry {
         Vector v1 = y.subtract(x);
         Vector v2 = z.subtract(x);
 
-        this.vertex = x;
+        this.p0 = x;
         normal = v1.crossProduct(v2).normalize();
     }
 
@@ -68,18 +69,34 @@ public class Plane extends Geometry {
         return normal;
     }
 
-    @Override
+
+    /**
+     * Finds the intersections of a Ray with the current object.
+     * @param ray The ray to intersect
+     * @return List of points all the intersections, if there is no intersections return null
+     */
     public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
-        if (isZero(normal.dotProduct(ray.getDir())))
+        if (p0.equals(ray.getP0())) {
             return null;
-        if (vertex.equals(ray.getP0()))
-            return null;
-        double t = (normal.dotProduct((vertex.subtract(ray.getP0())))) / (normal.dotProduct(ray.getDir()));
-        if (t < 0 || isZero(t))
-            return null;
+        }
+        List<GeoPoint> result = null;
+        Vector p0DistanceQ0;
+        Vector vector = ray.getDir();
+        double numerator, denominator, t;
+        boolean isThereNoIntersections;
 
-        return List.of(new GeoPoint(this,ray.getPoint(t)));
+
+        p0DistanceQ0 = p0.subtract(ray.getP0());
+        numerator = alignZero(normal.dotProduct(p0DistanceQ0));
+        denominator = alignZero(normal.dotProduct(vector));
+        t = alignZero(numerator / denominator);
+        isThereNoIntersections = isZero(numerator) || isZero(denominator) || t <= 0;
+        if (!isThereNoIntersections) {
+            result = new LinkedList<>();
+            result.add(new GeoPoint(this, ray.getP0(t)));
+        }
+
+        return result;
     }
-
 
 }

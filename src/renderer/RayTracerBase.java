@@ -1,5 +1,6 @@
 package renderer;
 
+import primitives.Color;
 import primitives.Ray;
 import scene.Scene;
 
@@ -10,19 +11,21 @@ public abstract class RayTracerBase {
     protected Scene scene;
 
     /**
-     * Constructs a new RayTracerBase object with the given scene.
-     *
-     * @param scene the scene to be rendered
+     * Constructor.
+     * @param scene the scene
+     * @throws NullPointerException if scene is null
      */
-    public RayTracerBase(Scene scene) {
+    public RayTracerBase(Scene scene) throws NullPointerException {
+        if (scene == null) {
+            throw new NullPointerException("ERROR: scene can't be null");
+        }
         this.scene = scene;
     }
 
     /**
-     * Traces a ray in the scene and computes the color.
-     *
-     * @param ray the ray to be traced
-     * @return the computed color of the traced ray
+     * Got a ray and return the color of the intersect geometries.
+     * @param ray the ray
+     * @return the color of the intersect geometries
      */
-    public abstract primitives.Color traceRay(Ray ray);
+    public abstract Color traceRay(Ray ray);
 }

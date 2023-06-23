@@ -1,52 +1,45 @@
 package geometries;
 
-import primitives.Point;
 import primitives.Ray;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class Geometries extends Intersectable {
-    private List<Intersectable> intersectableList;
+
+    private final List<Intersectable> geometries;
 
     public Geometries() {
-        intersectableList = new ArrayList<Intersectable>();
+        geometries = new LinkedList<>();
     }
 
-    public Geometries(Intersectable... Geometries) {
-
-    }
-
-    public void add(Intersectable... Geometries) {
-
+    public Geometries(Intersectable... geometries) {
+        this.geometries = new LinkedList<>(Arrays.asList(geometries));
     }
 
     /**
-     * Finds the intersections of a given ray with the geometry object.
-     * If no intersections are found, an empty list is returned.
-     *
-     * @param ray The ray to intersect with the geometry object
-     * @return A list of intersection points between the ray and the geometry object
+     * Add more geometries to the list.
+     * @param geometries Geometries to add to current list
      */
-    @Override
-    public List<Point> findIntersections(Ray ray) {
-        return null;
+    public void add(Intersectable... geometries) {
+        this.geometries.addAll(Arrays.asList(geometries));
     }
 
-    /**
-     * @param ray
-     * @return
-     */
     @Override
-    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
-        return null;
-    }
-/**
- * Finds the intersections of a given ray with the geometry object.
- * If no intersections are found, an empty list is returned.
- *
- * @param ray The ray to intersect with the geometry object
- * @return A list of intersection points between the ray and the geometry object
- */
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+        List<GeoPoint> result = new LinkedList<>();
 
+        for (Intersectable item : geometries) {
+            List<GeoPoint> itemIntersectionPoints = item.findGeoIntersections(ray);
+            if (itemIntersectionPoints != null) {
+                result.addAll(itemIntersectionPoints);
+            }
+        }
+        result = result.isEmpty() ? null : result;
+
+        return result;
+    }
 }

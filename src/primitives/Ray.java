@@ -1,7 +1,9 @@
 package primitives;
 
 import geometries.Intersectable.GeoPoint;
-
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.List;
 
 /**
@@ -15,11 +17,11 @@ public class Ray {
      */
     private Point p0;
 
-
     /**
      * The direction vector of the ray.
      */
     private Vector dir;
+    private static final double DELTA = 0.1;
 
     /**
      * Constructs a new ray with the given origin point and direction vector.
@@ -57,14 +59,6 @@ public class Ray {
         return p0.add(dir.scale(t));
     }
 
-    /**
-     * Returns the direction vector of the ray.
-     *
-     * @return the direction vector of the ray
-     */
-    public Vector getDir() {
-        return dir;
-    }
 
     public Ray setDir(Vector dir) {
         this.dir = dir;
@@ -78,29 +72,9 @@ public class Ray {
      */
     @Override
     public String toString() {
-        return "Ray{" +
-                "p0=" + p0 +
-                ", dir=" + dir +
-                '}';
+        return p0 + " -> " + dir;
     }
 
-    /**
-     * Returns the origin point of the ray.
-     *
-     * @return the origin point of the ray
-     */
-    public Point getOrigin() {
-        return p0;
-    }
-
-    /**
-     * Returns the direction vector of the ray.
-     *
-     * @return the direction vector of the ray
-     */
-    public Vector getDirection() {
-        return dir;
-    }
 
     /**
      * Finds the closest point to the start of the ray among the given list of points.
@@ -124,36 +98,48 @@ public class Ray {
     }
 
     /**
-     * Find closest GeoPoint
-     *
-     * @param points list of GeoPoints
-     * @return closest GeoPoint
+     * Find the closest point to current ray.
+     * @param points list of geo points
+     * @return the closest geo point to ray, if there are no points, return null
      */
     public GeoPoint findClosestGeoPoint(List<GeoPoint> points) {
-        if (points == null || points.isEmpty())
-            return null;
-        GeoPoint closest = null;
-        double minDistance = Double.POSITIVE_INFINITY;
-        for (GeoPoint p : points) {
-            double distance = p.point.distance(p0);
-            if (distance < minDistance) {
-                closest = p;
-                minDistance = distance;
+        if (points == null || points.isEmpty()) {
+            return null; // Return null if the list is empty
+        }
+
+        GeoPoint closestPoint = null;
+        double minDistanceSquared = Double.MAX_VALUE;
+
+        for (GeoPoint geoPoint : points) {
+            double distanceSquared = geoPoint.point.distanceSquared(p0);
+            if (distanceSquared < minDistanceSquared) {
+                minDistanceSquared = distanceSquared;
+                closestPoint = geoPoint;
             }
         }
-        return closest;
+
+        return closestPoint;
     }
 
-    public Point getP0() {
+    @Override
+    public int hashCode()
+    {
+        return p0.hashCode() + dir.hashCode();
+    }
+    public Point getP0()
+    {
         return p0;
     }
 
-    public Ray setP0(Point p0) {
-        this.p0 = p0;
-        return this;
+    public Point getP0(double t)
+    {
+        return p0.add(dir.scale(t));
     }
 
-    public Point getPoint() {
-        return p0;
+    public Vector getDir()
+    {
+        return dir;
     }
+
+
 }

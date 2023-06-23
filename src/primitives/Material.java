@@ -1,62 +1,125 @@
 package primitives;
 
 /**
- * Material class represents the material properties of a geometry.
+ * Represents the material properties of a geometry.
  */
 public class Material {
-    public Double3 kD = new Double3(0.0, 0.0, 0.0);
-    public Double3 kS = new Double3(0.0, 0.0, 0.0);
-    public int nShininess = 0;
+    /**
+     * Diffusion coefficient.
+     */
+    public Double3 kD;
+    /**
+     * Specular coefficient.
+     */
+    public Double3 kS;
+    /**
+     * Transparency coefficient.
+     */
+    public Double3 kT;
+    /**
+     * Reflection coefficient.
+     */
+    public Double3 kR;
+    /**
+     * Specular exponent.
+     */
+    public int nShininess;
 
     /**
-     * Sets the diffuse color of the material.
-     *
-     * @param kD the diffuse color to set
-     * @return this material
+     * Default constructor.
      */
-    public Material setKd(Double3 kD) {
+    public Material() {
+        this.kD = Double3.ZERO;
+        this.kS = Double3.ZERO;
+        this.kT = Double3.ZERO;
+        this.kR = Double3.ZERO;
+        this.nShininess = 0;
+    }
+
+    /**
+     * Sets the diffusion coefficient.
+     * @param kD the diffusion coefficient as Double3
+     * @return the Material object
+     */
+    public Material setKD(Double3 kD) {
         this.kD = kD;
         return this;
     }
 
     /**
-     * Sets the diffuse color of the material.
-     *
-     * @param kD the diffuse color to set
-     * @return this material
+     * Sets the diffusion coefficient.
+     * @param kD the diffusion coefficient as double
+     * @return the Material object
      */
-    public Material setKd(double kD) {
-        this.kD = new Double3(kD, kD, kD);
+    public Material setKD(double kD) {
+        this.kD = new Double3(kD);
         return this;
     }
 
     /**
-     * Sets the specular color of the material.
-     *
-     * @param kS the specular color to set
-     * @return this material
+     * Sets the specular coefficient.
+     * @param kS the specular coefficient as Double3
+     * @return the Material object
      */
-    public Material setKs(Double3 kS) {
+    public Material setKS(Double3 kS) {
         this.kS = kS;
         return this;
     }
 
     /**
-     * Sets the specular color of the material.
-     *
-     * @param kS the specular color to set
-     * @return this material
+     * Sets the specular coefficient.
+     * @param kS the specular coefficient as double
+     * @return the Material object
      */
-    public Material setKs(double kS) {
-        this.kS = new Double3(kS, kS, kS);
+    public Material setKS(double kS) {
+        this.kS = new Double3(kS);
         return this;
     }
 
     /**
-     * Sets the shininess of the material.
-     *
-     * @param nShininess the shininess to set
-     * @return this material
+     * Sets the transparency coefficient.
+     * @param kT the transparency coefficient as Double3
+     * @return the Material object
+     */
+    public Material setKT(Double3 kT) {
+        this.kT = kT;
+        return this;
+    }
+
+    /**
+     * Sets the transparency coefficient.
+     * @param kT the transparency coefficient as double
+     * @return the Material object
+     */
+    public Material setKT(double kT) {
+        this.kT = new Double3(kT);
+        return this;
+    }
+
+    /**
+     * Sets the reflection coefficient.
+     * @param kR the reflection coefficient as Double3
+     * @return the Material object
+     */
+    public Material setKR(Double3 kR) {
+        this.kR = kR;
+        return this;
+    }
+
+    /**
+     * Sets the reflection coefficient.
+     * @param kR the reflection coefficient as double
+     * @return the Material object
+     */
+    public Material setKR(double kR) {
+        this.kR = new Double3(kR);
+        return this;
+    }
+
+    /**
+     * Sets the specular exponent.
+     * @param nShininess the specular exponent
+     * @return the Material object
      */
     public Material setShininess(int nShininess) {
         this.nShininess = nShininess;
