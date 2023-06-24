@@ -1,15 +1,19 @@
 package test;
 
-import primitives.Point;
-import primitives.Vector;
-
-import static java.lang.System.out;
-import static primitives.Util.isZero;
+import geometries.*;
+import lighting.AmbientLight;
+import lighting.SpotLight;
+import primitives.*;
+import renderer.Camera;
+import renderer.ImageWriter;
+import renderer.RayTracerBasic;
+import scene.Scene;
 
 /**
  * Test program for the 1st stage
  *
  * @author Dan Zilberstein
+
  */
 public final class Main {
     /**
@@ -17,73 +21,83 @@ public final class Main {
      * @param args irrelevant here
      */
     public static void main(String[] args) {
+        // Create the material for the ring and the pearl
+        Material ringMaterial = new Material()
+                .setKd(0.5)  // Diffusion coefficient
+                .setKs(0.5)  // Specular coefficient
+                .setKr(0.5)  // Reflection coefficient
+                .setKt(0.5)  // Transparency coefficient
+                .setShininess(20); // Specular exponent
 
-        /* test zero vector */
-        try {
-            new Vector(0, 0, 0);
-            out.println("ERROR: zero vector does not throw an exception");
-        } catch (Exception ignored) {
-        }
+        Material pearlMaterial = new Material()
+                .setKd(0.8)  // Diffusion coefficient
+                .setKs(0.2)  // Specular coefficient
+                .setKr(0)    // Reflection coefficient
+                .setKt(0)    // Transparency coefficient
+                .setShininess(100); // Specular exponent
 
-        Vector v1 = new Vector(1, 2, 3);
-        Vector v2 = new Vector(-2, -4, -6);
-        Vector v3 = new Vector(0, 3, -2);
+        Material planeMaterial = new Material()
+                .setKd(0.5)  // Diffusion coefficient
+                .setKs(0.5)  // Specular coefficient
+                .setKr(0.5)  // Reflection coefficient
+                .setKt(0.5)  // Transparency coefficient
+                .setShininess(20); // Specular exponent
 
-        /* test length.. */
-        if (!isZero(v1.lengthSquared() - 14)) {
-            out.println("ERROR: lengthSquared() wrong value");
-        }
-        if (!isZero(new Vector(0, 3, 4).length() - 5)) {
-            out.println("ERROR: length() wrong value");
-        }
 
-        /* test Dot-Product */
-        if (!isZero(v1.dotProduct(v3))) {
-            out.println("ERROR: dotProduct() for orthogonal vectors is not zero");
-        }
-        if (!isZero(v1.dotProduct(v2) + 28)) {
-            out.println("ERROR: dotProduct() wrong value");
-        }
+        // Create the pearl
+        Sphere pearl = new Sphere(new Point(0, 0, 0), 1);  // Pearl centered at origin with radius 1
+        pearl.setMaterial(pearlMaterial);
 
-        /* test Cross-Product, test zero vector*/
-        try {
-            v1.crossProduct(v2);
-            out.println("ERROR: crossProduct() for parallel vectors does not throw an exception");
-        } catch (Exception ignored) {
-        }
-        Vector vr = v1.crossProduct(v3);
-        if (!isZero(vr.length() - v1.length() * v3.length())) {
-            out.println("ERROR: crossProduct() wrong result length");
-        }
-        if (!isZero(vr.dotProduct(v1)) || !isZero(vr.dotProduct(v3))) {
-            out.println("ERROR: crossProduct() result is not orthogonal to its operands");
-        }
+        // Create the ring base (a tube)
+        Tube ringBase = new Tube(new Ray(new Point(0, 0, -2), new Vector(0, 0, 1)), 2);
+        ringBase.setMaterial(ringMaterial);
 
-        /* test vector normalization vs vector length and cross-product */
-        Vector v = new Vector(1, 2, 3);
-        Vector u = v.normalize();
-        if (!isZero(u.length() - 1)) {
-            out.println("ERROR: the normalized vector is not a unit vector");
-        }
-        /* test that the vectors are co-lined */
-        try {
-            v.crossProduct(u);
-            out.println("ERROR: the normalized vector is not parallel to the original one");
-        } catch (Exception ignored) {
-        }
-        if (v.dotProduct(u) < 0) {
-            out.println("ERROR: the normalized vector is opposite to the original one");
-        }
+        // Create the triangles that hold the pearl
+        Triangle triangle1 = new Triangle(new Point(-1, -1, -1), new Point(-1, 1, -1), new Point(1, 0, -1));
+        triangle1.setMaterial(ringMaterial);
+        Triangle triangle2 = new Triangle(new Point(-1, -1, -1), new Point(1, -1, -1), new Point(1, 0, -1));
+        triangle2.setMaterial(ringMaterial);
+        Triangle triangle3 = new Triangle(new Point(-1, 1, -1), new Point(1, 1, -1), new Point(1, 0, -1));
+        triangle3.setMaterial(ringMaterial);
 
-        /* Test operations with points and vectors */
-        Point p1 = new Point(1, 2, 3);
-        if (!(p1.add(new Vector(-1, -2, -3)).equals(new Point(0, 0, 0)))) {
-            out.println("ERROR: Point + Vector does not work correctly");
-        }
-        if (!new Vector(1, 1, 1).equals(new Point(2, 3, 4).subtract(p1))) {
-            out.println("ERROR: Point - Point does not work correctly");
-        }
 
-        out.println("If there were no any other outputs - all tests succeeded!");
+        Camera camera = new Camera(new Point(0, 0, 10000), new Vector(0, 0, -1), new Vector(0, 1, 0)) //
+                .setVPSize(2500, 2500).setVPDistance(10000); //
+
+        // Create a bright pink plane
+        Plane plane = new Plane(new Point(0, -5, 0), new Vector(0, 1, 0));
+        plane.setMaterial(planeMaterial);
+
+        // Assuming you have some kind of scene or world object to add these geometries to...
+        Scene scene = new Scene("pearl ring" );
+        scene.addGeometry(pearl);
+        scene.addGeometry(ringBase);
+        scene.addGeometry(triangle1);
+        scene.addGeometry(triangle2);
+        scene.addGeometry(triangle3);
+
+
+
+        plane.setEmission(new Color(java.awt.Color.PINK));
+
+        scene.addGeometry(plane);
+
+        scene.setAmbientLight(
+                new AmbientLight(
+                        new Color(255, 255, 255),
+                        new Double3(0.1)));
+
+        scene.lights.add(new SpotLight(new Color(1020, 400, 400), new Point(-750, -750, -150), new Vector(-1, -1, -4)) //
+                .setKl(0.00001).setKq(0.000005));
+
+
+
+        ImageWriter imageWriter = new ImageWriter("pearlRing", 500, 500);
+        camera.setImageWriter(imageWriter) //
+                .setRayTracer(new RayTracerBasic(scene)) //
+                .renderImage() //
+                .writeToImage();
+
     }
 }
+

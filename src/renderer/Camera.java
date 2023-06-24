@@ -28,11 +28,12 @@ public class Camera {
     private Vector vectorUp;
     private Vector vectorRight;
     private Point p0;
-    private int distance;
+    private double distance;
     private double width;
     private double height;
     private ImageWriter imageWriter;
     private RayTracerBase rayTracer;
+
 
     /**
      * Constructor to create new Camera.
@@ -65,12 +66,16 @@ public class Camera {
     public Vector getVectorUp() {
         return vectorUp;
     }
-
+    public Camera setVPSize(double width, double height) {
+        this.width = width;
+        this.height = height;
+        return this;
+    }
     public Vector getVectorRight() {
         return vectorRight;
     }
 
-    public int getDistance() {
+    public double getDistance() {
         return distance;
     }
 
@@ -356,4 +361,11 @@ public class Camera {
         imageWriter.writeToImage();
         return this;
     }
+
+    public Camera setVPDistance(double distance) {
+        this.distance = distance;
+        return this;
+    }
+
+
 }

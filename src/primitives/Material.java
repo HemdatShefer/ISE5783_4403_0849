@@ -41,7 +41,7 @@ public class Material {
      * @param kD the diffusion coefficient as Double3
      * @return the Material object
      */
-    public Material setKD(Double3 kD) {
+    public Material setKd(Double3 kD) {
         this.kD = kD;
         return this;
     }
@@ -51,7 +51,7 @@ public class Material {
      * @param kD the diffusion coefficient as double
      * @return the Material object
      */
-    public Material setKD(double kD) {
+    public Material setKd(double kD) {
         this.kD = new Double3(kD);
         return this;
     }
@@ -61,7 +61,7 @@ public class Material {
      * @param kS the specular coefficient as Double3
      * @return the Material object
      */
-    public Material setKS(Double3 kS) {
+    public Material setKs(Double3 kS) {
         this.kS = kS;
         return this;
     }
@@ -71,7 +71,7 @@ public class Material {
      * @param kS the specular coefficient as double
      * @return the Material object
      */
-    public Material setKS(double kS) {
+    public Material setKs(double kS) {
         this.kS = new Double3(kS);
         return this;
     }
@@ -81,7 +81,7 @@ public class Material {
      * @param kT the transparency coefficient as Double3
      * @return the Material object
      */
-    public Material setKT(Double3 kT) {
+    public Material setKt(Double3 kT) {
         this.kT = kT;
         return this;
     }
@@ -91,7 +91,7 @@ public class Material {
      * @param kT the transparency coefficient as double
      * @return the Material object
      */
-    public Material setKT(double kT) {
+    public Material setKt(double kT) {
         this.kT = new Double3(kT);
         return this;
     }
@@ -101,7 +101,7 @@ public class Material {
      * @param kR the reflection coefficient as Double3
      * @return the Material object
      */
-    public Material setKR(Double3 kR) {
+    public Material setKr(Double3 kR) {
         this.kR = kR;
         return this;
     }
@@ -111,7 +111,7 @@ public class Material {
      * @param kR the reflection coefficient as double
      * @return the Material object
      */
-    public Material setKR(double kR) {
+    public Material setKr(double kR) {
         this.kR = new Double3(kR);
         return this;
     }
@@ -125,4 +125,6 @@ public class Material {
         this.nShininess = nShininess;
         return this;
     }
+
+
 }
