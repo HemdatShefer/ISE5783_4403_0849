@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.List;
 
+import static primitives.Util.alignZero;
+import static primitives.Util.isZero;
+
 /**
  * This class represents a ray in 3D space, which consists of an origin point and a direction vector.
  * The origin point is the starting point of the ray, and the direction vector is the direction in which
@@ -33,6 +36,26 @@ public class Ray {
     public Ray(Point point, Vector vector) {
         p0 = point;
         dir = vector.normalize();
+    }
+
+    /**
+     * Creates a new ray by point,vector direction and normal.
+     * @param p0 head point of the ray
+     * @param dir direction of the ray
+     * @param normal normal of the ray
+     */
+    public Ray(Point p0, Vector dir, Vector normal) {
+        this.dir = dir;
+        /* make sure the normal and the direction are not orthogonal */
+        double nv = alignZero(normal.dotProduct(dir));
+        /* if not orthogonal */
+        if (!isZero(nv)) {
+            Vector moveVector = normal.scale(nv > 0 ? DELTA : -DELTA);
+            /* move the head of the vector in the right direction */
+            this.p0 = p0.add(moveVector);
+        } else {
+            this.p0 = p0;
+        }
     }
 
     /**

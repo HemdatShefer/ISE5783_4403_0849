@@ -16,23 +16,26 @@ import java.util.List;
 import java.util.MissingResourceException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-enum Axis {
+enum Axis
+{
     X, Y, Z
 }
 
 public class Camera {
     private static final double ERROR_VALUE_DOUBLE = -1d;
-    private static final int ERROR_VALUE_INT = -1;
-    private static final int MAX_THREADS = 16;
-    private Vector vectorTo;
-    private Vector vectorUp;
-    private Vector vectorRight;
-    private Point p0;
-    private double distance;
-    private double width;
-    private double height;
-    private ImageWriter imageWriter;
-    private RayTracerBase rayTracer;
+    private static final double ERROR_VALUE_INT = -1;
+
+    // Camera vectors for movement and rotation
+    private Vector vectorTo; // vector pointing to direction of camera
+    private Vector vectorUp; // vector pointing up
+    private Vector vectorRight; // vector pointing to the right of the camera
+    private Point p0; // the camera's location
+    private double distance; // the distance from the camera to the view plane
+    private double width; // the width of the view plane
+    private double height; // the height of the view plane
+    private ImageWriter imageWriter; // used to write the final image
+    private RayTracerBase rayTracer; // used to perform ray tracing
+
 
 
     /**
@@ -44,15 +47,15 @@ public class Camera {
      */
     public Camera(Point p0, Vector vectorTo, Vector vectorUp) throws IllegalArgumentException {
         this.p0 = p0;
-        this.vectorTo = vectorTo.normalize();
-        this.vectorUp = vectorUp.normalize();
+        this.vectorTo = vectorTo.normalize(); // normalize vector to maintain direction, but restrict length to 1
+        this.vectorUp = vectorUp.normalize(); // normalize vector to maintain direction, but restrict length to 1
         if (!isZero(vectorTo.dotProduct(vectorUp))) {
-            throw new IllegalArgumentException("ERROR: vectorTo and vectorUp must be orthogonal");
+            throw new IllegalArgumentException("ERROR: vectorTo and vectorUp must be orthogonal"); // ensure vectors are orthogonal for a correct camera setup
         }
-        this.vectorRight = vectorTo.crossProduct(vectorUp).normalize();
-        distance = ERROR_VALUE_INT;
-        width = ERROR_VALUE_DOUBLE;
-        height = ERROR_VALUE_DOUBLE;
+        this.vectorRight = vectorTo.crossProduct(vectorUp).normalize(); // compute right vector as orthogonal to the other two
+        distance = ERROR_VALUE_INT; // distance initialized to an error value to ensure it's set later
+        width = ERROR_VALUE_DOUBLE; // width initialized to an error value to ensure it's set later
+        height = ERROR_VALUE_DOUBLE; // height initialized to an error value to ensure it's set later
     }
 
     public Point getP0() {
@@ -297,26 +300,18 @@ public class Camera {
 
     public Camera renderImage() throws MissingResourceException {
         checkAndThrowIfMissingResources();
-        ExecutorService executor = Executors.newFixedThreadPool(MAX_THREADS);
 
         for (int row = 0; row < imageWriter.getNx(); row++) {
-            int finalRow = row;
-            Runnable runnable = () -> {
-                Ray ray;
-                Color color;
-                int nY = imageWriter.getNy();
-                for (int j = 0; j < nY; j++) {
-                    ray = constructRay(imageWriter.getNx(), nY, finalRow, j);
-                    color = rayTracer.traceRay(ray);
-                    imageWriter.writePixel(finalRow, j, color);
-                }
-            };
-            executor.execute(runnable);
+            Ray ray;
+            Color color;
+            int nY = imageWriter.getNy();
+            for (int j = 0; j < nY; j++) {
+                ray = constructRay(imageWriter.getNx(), nY, row, j);
+                color = rayTracer.traceRay(ray);
+                imageWriter.writePixel(row, j, color);
+            }
         }
-        executor.shutdown();
-        while (!executor.isTerminated()) {
-            continue;
-        }
+
         return this;
     }
 
