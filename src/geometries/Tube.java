@@ -1,12 +1,14 @@
 package geometries;
 
-import primitives.*;
-
-import java.util.List;
 
 import static primitives.Util.alignZero;
 import static primitives.Util.isZero;
+
+import java.util.List;
+import primitives.Point;
 import primitives.Ray;
+import primitives.Vector;
+
 /**
  * Class describe tube, the tube is infinity.
  */
@@ -22,7 +24,7 @@ public class Tube extends Geometry {
      * @throws IllegalArgumentException if the radius is negative or zero
      */
     public Tube(Ray axisRay, double radius) {
-        if (radius < 0 || Util.isZero(radius)) {
+        if (radius < 0 || isZero(radius)) {
             throw new IllegalArgumentException("Radius can't be zero or negative.");
         }
         this.axisRay = axisRay;
@@ -42,7 +44,7 @@ public class Tube extends Geometry {
         Vector pMinusHead = point.subtract(axisRay.getP0());
         double t = axisRay.getDir().dotProduct(pMinusHead);
         /* Check if the point is "front" to the p0 the point in the base */
-        if (Util.isZero(t)) {
+        if (isZero(t)) {
             return pMinusHead.normalize();
         }
         /* The point on the side calculate the normal */
@@ -52,58 +54,64 @@ public class Tube extends Geometry {
 
     @Override
     public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
-        //The direction of the tube's central ray
-        Vector tubeDir = this.axisRay.getDir();
-        //The direction of the incoming ray
-        Vector rayDir = ray.getDir();
+        Vector v = ray.getDir();
+        Vector v0 = axisRay.getDir();
 
-        //The rays are parallel and can't intersect
-        if (tubeDir.equals(rayDir) || tubeDir.equals(rayDir.scale(-1))) {
+        /* Calculating temp1 = v - v0 * (v,v0) */
+        Vector temp1 = v;
+        double vv0 = v.dotProduct(v0);
+        if (!isZero(vv0)) {
+            Vector v0vv0 = v0.scale(vv0);
+            if (v.equals(v0vv0)) {
+                return null;
+            }
+            temp1 = v.subtract(v0vv0);
+        }
+
+        /* Calculating temp2 = dp - v0 * (dp,v0) where dp = p0 - p */
+        double temp1DotTemp2 = 0;
+        double squaredTemp2 = 0;
+        if (!ray.getP0().equals(axisRay.getP0())) {
+            Vector dp = ray.getP0().subtract(axisRay.getP0());
+            Vector temp2 = dp;
+            double dpv0 = dp.dotProduct(v0);
+            if (isZero(dpv0)) {
+                temp1DotTemp2 = temp1.dotProduct(temp2);
+                squaredTemp2 = temp2.lengthSquared();
+            } else {
+                Vector v0dpv0 = v0.scale(dpv0);
+                if (!dp.equals(v0dpv0)) {
+                    temp2 = dp.subtract(v0dpv0);
+                    temp1DotTemp2 = temp1.dotProduct(temp2);
+                    squaredTemp2 = temp2.lengthSquared();
+                }
+            }
+        }
+
+        /* Getting the quadratic equation: at^2 +bt + c = 0 */
+        double a = temp1.lengthSquared();
+        double b = 2 * temp1DotTemp2;
+        double c = alignZero(squaredTemp2 - radius * radius);
+
+        double squaredDelta = alignZero(b * b - 4 * a * c);
+        if (squaredDelta <= 0) {
             return null;
         }
 
-        //Projection of rayDir onto tubeDir (dot product)
-        double dotP1 = Util.alignZero(rayDir.dotProduct(tubeDir));
-        //Component of rayDir orthogonal to tubeDir
-        Vector vec1 = dotP1 == 0 ? rayDir : rayDir.subtract(tubeDir.scale(dotP1));
-        //Squaring the radius for later calculations
-        double radiusSquared = this.radius * this.radius;
+        double delta = Math.sqrt(squaredDelta);
+        double t1 = alignZero((-b + delta) / (2 * a));
+        double t2 = alignZero((-b - delta) / (2 * a));
 
-        //Coefficient 'a' in the quadratic equation, representing the squared length of vec1
-        double a = Util.alignZero(vec1.lengthSquared());
-
-        //Vector from the base of the tube to the base of the incoming ray
-        Vector deltaP = ray.getP0().subtract(this.axisRay.getP0());
-
-        //Projection of deltaP onto tubeDir
-        double dotP2 = Util.alignZero(deltaP.dotProduct(tubeDir));
-        //Component of deltaP orthogonal to tubeDir
-        var vec2 = dotP2 == 0 ? deltaP : deltaP.subtract(tubeDir.scale(dotP2));
-
-        //Coefficient 'b' in the quadratic equation, representing 2 times the dot product of vec1 and vec2
-        double b = Util.alignZero(2 * (vec1.dotProduct(vec2)));
-        //Coefficient 'c' in the quadratic equation, representing the squared length of vec2 minus the squared radius
-        double c = Util.alignZero(vec2.lengthSquared() - radiusSquared);
-
-        //Discriminant in the quadratic equation
-        double det = Util.alignZero(b * b - 4 * a * c);
-
-        //No solutions to the quadratic equation - the ray doesn't intersect the tube
-        if (det <= 0) return null;
-
-        //Solutions exist - calculate them
-        det = Math.sqrt(det);
-        double t1 = Util.alignZero((-b + det) / (2 * a));
-        double t2 = Util.alignZero((-b - det) / (2 * a));
-
-        //No intersections, because they occur behind the ray's base point
-        if (t1 <= 0 || t2 <= 0) return null;
-        else {
-            //Return one or both intersections, if they exist
-            return t2 <= 0 ? List.of(new GeoPoint(this, ray.getPoint(t1))) :
-                    List.of(new GeoPoint(this, ray.getPoint(t2)), new GeoPoint(this, ray.getPoint(t1)));
+        if (t1 > 0 && t2 > 0) {
+            return List.of(new GeoPoint(this, ray.getP0(t1)), new GeoPoint(this, ray.getP0(t2)));
         }
+        if (t1 > 0) {
+            return List.of(new GeoPoint(this, ray.getP0(t1)));
+        }
+        if (t2 > 0) {
+            return List.of(new GeoPoint(this, ray.getP0(t2)));
+        }
+
+        return null;
     }
-
-
 }

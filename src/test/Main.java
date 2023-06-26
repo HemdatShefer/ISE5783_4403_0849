@@ -26,6 +26,7 @@ public final class Main {
     public static void main(String[] args) {
 
         Material materialDefault = new Material().setKd(0.5).setKs(0.5).setShininess(30);
+        Material glassMaterial = new Material().setKs(0).setKr(1).setShininess(30);
 
         Color cubeColor = new Color(255, 105, 180);
 
@@ -56,7 +57,7 @@ public final class Main {
                         new Sphere(
                                 new Point(-30, -10, 60), 20)
                                 .setEmission(new Color(java.awt.Color.GREEN))
-                                .setMaterial(materialDefault.setKt(0.5)),
+                                .setMaterial(glassMaterial),
 
                         new Sphere(
                                 new Point(15, -20, 70), 30)
@@ -124,9 +125,8 @@ public final class Main {
                 .setKq(0.00005));
 //        scene.lights.add(new DirectionalLight(new Color(java.awt.Color.WHITE),
 //                                              new Vector(-1, 1, -1)));
-        scene.lights.add
-                ((LightSource) new DirectionalLight(new Color(java.awt.Color.WHITE),
-                new Vector(-1, 1, -1)));
+        LightSource lightSource = new DirectionalLight(new Color(java.awt.Color.WHITE),new Vector(-1, 1, -1));
+        scene.lights.add(lightSource);
 
         scene.setBackground(new Color(java.awt.Color.black));
         scene.setAmbientLight(new AmbientLight(Color.BLACK, new Double3(0)));

@@ -263,6 +263,20 @@ public class Camera {
      * @return ray from p0 the center to the center of the pixel in row i column j
      */
     public Ray constructRay(int nX, int nY, int j, int i) {
+        return constructRay(nX, nY, j, i, width, height);
+    }
+
+        /**
+     * Find a ray from p0 to the center of the pixel from the given resolution.
+     * @param nX the number of the rows
+     * @param nY the number of the columns
+     * @param column column
+     * @param row row
+     * @param width the width of the view plane
+     * @param height the height of the view plane
+     * @return ray from p0 the center to the center of the pixel in row and column
+     */
+    public Ray constructRay(int nX, int nY, int column, int row, double width, double height) {
         Vector dir;
         Point pointCenter, pointCenterPixel;
         double ratioY, ratioX, yI, xJ;
@@ -272,8 +286,8 @@ public class Camera {
         ratioX = alignZero(width / nX);
 
         pointCenterPixel = pointCenter;
-        yI = alignZero(-1 * (i - (nY - 1) / 2d) * ratioY);
-        xJ = alignZero((j - (nX - 1) / 2d) * ratioX);
+        yI = alignZero(-1 * (row - (nY - 1) / 2d) * ratioY);
+        xJ = alignZero((column - (nX - 1) / 2d) * ratioX);
         if (!isZero(xJ)) {
             pointCenterPixel = pointCenterPixel.add(vectorRight.scale(xJ));
         }
@@ -308,6 +322,8 @@ public class Camera {
         }
         return result.isEmpty() ? null : result;
     }
+
+
     /**
      * Find a ray from p0 to the center of the pixel from the given resolution.
      * @param nX the number of the rows
@@ -323,7 +339,17 @@ public class Camera {
         Vector dir;
         Point pointCenter, pointCenterPixel;
         Ray ray;
-        double ratioY, ratioX, yI, xJ;..
+        double ratioY, ratioX, yI, xJ;
+        List<Ray> rays = new LinkedList<>();
+
+        pointCenter = p0.add(vectorTo.scale(distance));
+        ratioY = height / nY;
+        ratioX = width / nX;
+
+        pointCenterPixel = pointCenter;
+        yI = -1 * (row - (nY - 1) / 2d) * ratioY;
+        xJ = (column - (nX - 1) / 2d) * ratioX;
+        if (!isZero(xJ)) {
             pointCenterPixel = pointCenterPixel.add(vectorRight.scale(xJ));
         }
         if (!isZero(yI)) {
@@ -348,21 +374,6 @@ public class Camera {
                 rays.add(ray);
             }
         }
-        /*
-                double rY = internalHeight / internalCountHeight;
-                double rX = internalWidth / internalCountWidth;
-                double ySampleI = (internalRow * rY + rY / 2d) + yi;
-                double xSampleJ = (internalColumn * rX + rX / 2d) + xj;
-                Point pIJ = pC;
-                if (!isZero(xSampleJ)) {
-                    pIJ = pIJ.add(vectorRight.scale(xSampleJ));
-                }
-                if (!isZero(ySampleI)) {
-                    pIJ = pIJ.add(vectorUp.scale(-ySampleI));
-                }
-                rays.add(new Ray(p0, pIJ.subtract(pC)));
-         */
-
         return rays;
     }
 
