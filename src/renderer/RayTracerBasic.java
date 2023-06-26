@@ -145,6 +145,15 @@ public class RayTracerBasic extends RayTracerBase {
         return calcColor(closestPoint, ray);
     }
 
+    /**
+     * @param ray
+     * @return
+     */
+    @Override
+    public Color traceRay(List<Ray> ray) {
+        return null;
+    }
+
 
     /**
      * Finding Light Beam Cutting - Finding Shadow.

@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.MissingResourceException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.IntStream;
+
 enum Axis
 {
     X, Y, Z
@@ -35,7 +37,7 @@ public class Camera {
     private double height; // the height of the view plane
     private ImageWriter imageWriter; // used to write the final image
     private RayTracerBase rayTracer; // used to perform ray tracing
-
+    private int lineBeamRays;
 
 
     /**
@@ -56,6 +58,15 @@ public class Camera {
         distance = ERROR_VALUE_INT; // distance initialized to an error value to ensure it's set later
         width = ERROR_VALUE_DOUBLE; // width initialized to an error value to ensure it's set later
         height = ERROR_VALUE_DOUBLE; // height initialized to an error value to ensure it's set later
+        lineBeamRays = 1;
+    }
+
+    public Camera setBeamRays(int beamRays) {
+        lineBeamRays = (int)Math.sqrt(beamRays);
+        if (!isZero(lineBeamRays - Math.sqrt(beamRays))) {
+            lineBeamRays += 1;
+        }
+        return this;
     }
 
     public Point getP0() {
@@ -297,24 +308,79 @@ public class Camera {
         }
         return result.isEmpty() ? null : result;
     }
+    /**
+     * Find a ray from p0 to the center of the pixel from the given resolution.
+     * @param nX the number of the rows
+     * @param nY the number of the columns
+     * @param column column
+     * @param row row
+     * @return ray from p0 the center to the center of the pixel in row column
+     */
+    public List<Ray> constructBeamRays(int nX, int nY, int column, int row) {
+        if (lineBeamRays == 1) {
+            return List.of(constructRay(nX, nY, column, row, width, height));
+        }
+        Vector dir;
+        Point pointCenter, pointCenterPixel;
+        Ray ray;
+        double ratioY, ratioX, yI, xJ;..
+            pointCenterPixel = pointCenterPixel.add(vectorRight.scale(xJ));
+        }
+        if (!isZero(yI)) {
+            pointCenterPixel = pointCenterPixel.add(vectorUp.scale(yI));
+        }
+
+        for (int internalRow = 0; internalRow < lineBeamRays; internalRow++) {
+            for (int internalColumn = 0; internalColumn < lineBeamRays; internalColumn++) {
+                double rY = ratioY / lineBeamRays;
+                double rX = ratioX / lineBeamRays;
+                double ySampleI = -1 * (internalRow - (rY - 1) / 2d) * rY;
+                double xSampleJ = (internalColumn - (rX - 1) / 2d) * rX;
+                Point pIJ = pointCenterPixel;
+                if (!isZero(xSampleJ)) {
+                    pIJ = pIJ.add(vectorRight.scale(xSampleJ));
+                }
+                if (!isZero(ySampleI)) {
+                    pIJ = pIJ.add(vectorUp.scale(-ySampleI));
+                }
+                ray = new Ray(p0, pIJ.subtract(p0));
+
+                rays.add(ray);
+            }
+        }
+        /*
+                double rY = internalHeight / internalCountHeight;
+                double rX = internalWidth / internalCountWidth;
+                double ySampleI = (internalRow * rY + rY / 2d) + yi;
+                double xSampleJ = (internalColumn * rX + rX / 2d) + xj;
+                Point pIJ = pC;
+                if (!isZero(xSampleJ)) {
+                    pIJ = pIJ.add(vectorRight.scale(xSampleJ));
+                }
+                if (!isZero(ySampleI)) {
+                    pIJ = pIJ.add(vectorUp.scale(-ySampleI));
+                }
+                rays.add(new Ray(p0, pIJ.subtract(pC)));
+         */
+
+        return rays;
+    }
 
     public Camera renderImage() throws MissingResourceException {
         checkAndThrowIfMissingResources();
-
-        for (int row = 0; row < imageWriter.getNx(); row++) {
-            Ray ray;
-            Color color;
-            int nY = imageWriter.getNy();
-            for (int j = 0; j < nY; j++) {
-                ray = constructRay(imageWriter.getNx(), nY, row, j);
-                color = rayTracer.traceRay(ray);
-                imageWriter.writePixel(row, j, color);
-            }
-        }
-
+        IntStream.range(0, imageWriter.getNx()).parallel().forEach(row -> {
+            IntStream.range(0, imageWriter.getNy()).parallel().forEach(column -> {
+                Ray ray = constructRay(imageWriter.getNx(), imageWriter.getNy(), row, column);
+                List<Ray> rays = constructBeamRays(imageWriter.getNx(),
+                        imageWriter.getNy(),
+                        row,
+                        column);
+                Color color = rayTracer.traceRay(rays);
+                imageWriter.writePixel(row, column, color);
+            });
+        });
         return this;
     }
-
     /**
      * Print grid with line as color param.
      * @param interval how many unit size to color (in height and width)
@@ -324,7 +390,6 @@ public class Camera {
     public void printGrid(int interval, Color color) throws MissingResourceException {
         printGridToImage(interval, color).writeToImage();
     }
-
     /**
      * Create the image grid without actually print.
      * @param interval how many unit size to color (in height and width)
@@ -334,17 +399,17 @@ public class Camera {
      */
     public ImageWriter printGridToImage(int interval, Color color) throws MissingResourceException {
         checkAndThrowIfMissingResources();
-        boolean isOnTheLine = true;
-        for (int i = 0; i < imageWriter.getNx(); i++) {
-            for (int j = 0; j < imageWriter.getNy(); j++) {
-                isOnTheLine = i % interval == 0 || j % interval == 0;
-                if (isOnTheLine) {
-                    imageWriter.writePixel(i, j, color);
-                }
-            }
-        }
+        IntStream.range(0, imageWriter.getNx()).parallel().forEach(row -> {
+            IntStream
+                    .range(0, imageWriter.getNy())
+                    .parallel()
+                    /* Filter only the pixels on the line */
+                    .filter(column -> row % interval == 0 || column % interval == 0)
+                    .forEach(column -> imageWriter.writePixel(row, column, color));
+        });
         return imageWriter;
     }
+
 
     /**
      * Actual write the image.

@@ -4,6 +4,8 @@ import primitives.Color;
 import primitives.Ray;
 import scene.Scene;
 
+import java.util.List;
+
 /**
  * The base class for ray tracing algorithms.
  */
@@ -28,4 +30,6 @@ public abstract class RayTracerBase {
      * @return the color of the intersect geometries
      */
     public abstract Color traceRay(Ray ray);
+    public abstract Color traceRay(List<Ray> ray);
+
 }
