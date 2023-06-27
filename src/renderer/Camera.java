@@ -18,11 +18,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.IntStream;
 
-enum Axis
-{
-    X, Y, Z
-}
-
 public class Camera {
     private static final double ERROR_VALUE_DOUBLE = -1d;
     private static final double ERROR_VALUE_INT = -1;
@@ -332,20 +327,23 @@ public class Camera {
      * @param row row
      * @return ray from p0 the center to the center of the pixel in row column
      */
-    public List<Ray> constructBeamRays(int nX, int nY, int column, int row) {
+    public List<Ray> constructBeamRays(int nX, int nY, int column, int row)
+    {
+        // If there is only one ray per pixel, use the constructRay function to create it.
         if (lineBeamRays == 1) {
             return List.of(constructRay(nX, nY, column, row, width, height));
         }
+        // Variables used in the function.
         Vector dir;
         Point pointCenter, pointCenterPixel;
         Ray ray;
         double ratioY, ratioX, yI, xJ;
         List<Ray> rays = new LinkedList<>();
-
+        // Compute the center point of the pixel.
         pointCenter = p0.add(vectorTo.scale(distance));
         ratioY = height / nY;
         ratioX = width / nX;
-
+        // Compute the position of the pixel in the camera coordinate system.
         pointCenterPixel = pointCenter;
         yI = -1 * (row - (nY - 1) / 2d) * ratioY;
         xJ = (column - (nX - 1) / 2d) * ratioX;
@@ -355,9 +353,10 @@ public class Camera {
         if (!isZero(yI)) {
             pointCenterPixel = pointCenterPixel.add(vectorUp.scale(yI));
         }
-
+        // For each sub-pixel in the pixel, compute the ray that passes through it.
         for (int internalRow = 0; internalRow < lineBeamRays; internalRow++) {
             for (int internalColumn = 0; internalColumn < lineBeamRays; internalColumn++) {
+                // Compute the position of the sub-pixel.
                 double rY = ratioY / lineBeamRays;
                 double rX = ratioX / lineBeamRays;
                 double ySampleI = -1 * (internalRow - (rY - 1) / 2d) * rY;
@@ -369,27 +368,37 @@ public class Camera {
                 if (!isZero(ySampleI)) {
                     pIJ = pIJ.add(vectorUp.scale(-ySampleI));
                 }
+                // Compute the ray that passes through the sub-pixel.
                 ray = new Ray(p0, pIJ.subtract(p0));
 
+                // Add the ray to the list of rays.
                 rays.add(ray);
             }
         }
+        // Return the list of rays.
         return rays;
     }
 
-    public Camera renderImage() throws MissingResourceException {
+    public Camera renderImage() throws MissingResourceException
+    {
         checkAndThrowIfMissingResources();
-        IntStream.range(0, imageWriter.getNx()).parallel().forEach(row -> {
-            IntStream.range(0, imageWriter.getNy()).parallel().forEach(column -> {
-                Ray ray = constructRay(imageWriter.getNx(), imageWriter.getNy(), row, column);
-                List<Ray> rays = constructBeamRays(imageWriter.getNx(),
-                        imageWriter.getNy(),
-                        row,
-                        column);
-                Color color = rayTracer.traceRay(rays);
-                imageWriter.writePixel(row, column, color);
-            });
-        });
+        IntStream.range(0, imageWriter.getNx())//rows
+                .parallel().//threads
+                forEach(row -> {
+                                IntStream
+                                .range(0, imageWriter.getNy())
+                                .parallel()
+                                .forEach(column -> {
+                                                    Ray ray = constructRay
+                                                    (imageWriter.getNx(),
+                                                    imageWriter.getNy(),
+                                                    row, column);
+                                                    List<Ray> rays = constructBeamRays(imageWriter.getNx(),
+                                                    imageWriter.getNy(), row, column);
+                                                    Color color = rayTracer.traceRay(rays);
+                                                    imageWriter.writePixel(row, column, color);
+                                                    });
+                                });
         return this;
     }
     /**

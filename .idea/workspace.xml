@@ -4,12 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="435841dd-9b60-4e2b-8c76-8e578aabe64a" name="Changes" comment="creating basic image">
+    <list default="true" id="435841dd-9b60-4e2b-8c76-8e578aabe64a" name="Changes" comment="update better runinig time">
+      <change afterPath="$PROJECT_DIR$/images/MiniProjectLevel1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/MiniProjectLevel2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/rotatedImage1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/rotatedImage2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/rotatedImage3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/renderer/Axis.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/primitives/Color.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/primitives/Color.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/renderer/Camera.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/Camera.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/RayTracerBase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/RayTracerBase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/RayTracerBasic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/RayTracerBasic.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -109,7 +112,7 @@
       <recent name="geometries" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.Main.testMiniProject1">
+  <component name="RunManager" selected="JUnit.Main.mainTest">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="test.Main" />
       <module name="ISE5783_4403_0849" />
@@ -127,6 +130,22 @@
       <module name="ISE5783_4403_0849" />
       <option name="PACKAGE_NAME" value="" />
       <option name="TEST_OBJECT" value="package" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Main.mainTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="ISE5783_4403_0849" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="test.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="test" />
+      <option name="MAIN_CLASS_NAME" value="test.Main" />
+      <option name="METHOD_NAME" value="mainTest" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -163,28 +182,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ShadowTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="ISE5783_4403_0849" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="renderer.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="renderer" />
-      <option name="MAIN_CLASS_NAME" value="renderer.ShadowTests" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.Main.mainTest" />
+        <item itemvalue="JUnit.All in ISE5783_4403_0849" />
         <item itemvalue="JUnit.Main.testMiniProject1" />
         <item itemvalue="JUnit.PolygonTests.testFindIntsersectionPoints" />
-        <item itemvalue="JUnit.All in ISE5783_4403_0849" />
         <item itemvalue="Application.Main" />
-        <item itemvalue="JUnit.ShadowTests" />
       </list>
     </recent_temporary>
   </component>
@@ -344,7 +348,14 @@
       <option name="project" value="LOCAL‎" />
       <updated>1687659258770</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL‎-00022" summary="update better runinig time">
+      <created>1687815687983</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL‎-00022" />
+      <option name="project" value="LOCAL‎" />
+      <updated>1687815687983</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -376,34 +387,35 @@
     <MESSAGE value="fixing the code according to the instructions" />
     <MESSAGE value="fixing all tests" />
     <MESSAGE value="creating basic image" />
-    <option name="LAST_COMMIT_MESSAGE" value="creating basic image" />
+    <MESSAGE value="update better runinig time" />
+    <option name="LAST_COMMIT_MESSAGE" value="update better runinig time" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/unittests/geometries/CylinderTests.java</url>
-          <line>58</line>
+          <line>80</line>
           <option name="timeStamp" value="8" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/unittests/geometries/TubeTests.java</url>
-          <line>41</line>
+          <line>29</line>
           <option name="timeStamp" value="15" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/unittests/geometries/TubeTests.java</url>
-          <line>40</line>
+          <line>28</line>
           <option name="timeStamp" value="16" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/unittests/geometries/CylinderTests.java</url>
-          <line>65</line>
+          <line>179</line>
           <option name="timeStamp" value="18" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/unittests/geometries/CylinderTests.java</url>
-          <line>62</line>
+          <line>174</line>
           <option name="timeStamp" value="19" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
