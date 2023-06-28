@@ -188,7 +188,7 @@ public final class Main {
         for (int i = 0; i < BALLS_COUNT; i++) {
             Color color = colors[i % colors.length];
             Sphere sphere = new Sphere(new Point(x, y, z), radius);
-            sphere.setEmission(color).setMaterial(materialDefault);
+            sphere.setEmission(color).setMaterial(mirrorMaterial);
             balls1.add(sphere);
             radius -= 2;
             y -= 2.5 * radius;
@@ -203,7 +203,7 @@ public final class Main {
         for (int i = 0; i < BALLS_COUNT; i++) {
             Color color = colors[i % colors.length];
             Sphere sphere = new Sphere(new Point(x, y, z), radius);
-            sphere.setEmission(color).setMaterial(glassMaterial);
+            sphere.setEmission(color).setMaterial(mirrorMaterial);
             balls2.add(sphere);
             radius -= 2;
             y -= 2.5 * radius;
@@ -218,11 +218,25 @@ public final class Main {
         for (int i = 0; i < BALLS_COUNT; i++) {
             Color color = colors[i % colors.length];
             Sphere sphere = new Sphere(new Point(x, y, z), radius);
-            sphere.setEmission(color).setMaterial(glassMaterial);
+            sphere.setEmission(color).setMaterial(mirrorMaterial);
             balls2.add(sphere);
             radius -= 2;
             y -= 2.5 * radius;
         }
+        Point A = new Point(7+20,67+10,10); // Base vertex 1
+        Point B = new Point(-12+20+7,86+10, 11+7); // Base vertex 2
+        Point C = new Point(20, 86+10, 32); // Base vertex 3
+        Point D = new Point(11+20+7,  82+10, 17-7); // Apex of the pyramid
+
+        Triangle baseTriangle = new Triangle(A, B, C);
+        Triangle sideTriangle1 = new Triangle(A, B, D);
+        Triangle sideTriangle2 = new Triangle(B, C, D);
+        Triangle sideTriangle3 = new Triangle(C, A, D);
+
+        baseTriangle.setEmission(colors[1]).setMaterial(mirrorMaterial);
+        sideTriangle1.setEmission(colors[1]).setMaterial(mirrorMaterial);
+        sideTriangle2.setEmission(colors[1]).setMaterial(mirrorMaterial);
+        sideTriangle3.setEmission(colors[1]).setMaterial(mirrorMaterial);
 
 
         Plane leftMirror = new Plane(new Point(-100, 100, -400), new Vector(0, 1, 0));
@@ -249,16 +263,20 @@ public final class Main {
         scene.geometries.add(backgroundMirror);
 
 
-        Sphere[] ballsArray1 = balls1.toArray(new Sphere[0]);
-        scene.geometries.add(ballsArray1);
-        Sphere[] ballsArray2 = balls2.toArray(new Sphere[0]);
-        scene.geometries.add(ballsArray2);
-        Sphere[] ballsArray3 = balls3.toArray(new Sphere[0]);
-        scene.geometries.add(ballsArray3);
-        scene.geometries.add(leftMirror);
+       Sphere[] ballsArray1 = balls1.toArray(new Sphere[0]);
+       scene.geometries.add(ballsArray1);
+      Sphere[] ballsArray2 = balls2.toArray(new Sphere[0]);
+     scene.geometries.add(ballsArray2);
+      Sphere[] ballsArray3 = balls3.toArray(new Sphere[0]);
+      scene.geometries.add(ballsArray3);
+       scene.geometries.add(leftMirror);
         scene.geometries.add(cylinder);
         scene.geometries.add(cylinder2);
         scene.geometries.add(cylinder3);
+        scene.geometries.add(baseTriangle);
+        scene.geometries.add(sideTriangle1);
+        scene.geometries.add(sideTriangle2);
+        scene.geometries.add(sideTriangle3);
         scene.lights.add(spotLight);
         scene.lights.add(pointLight);
         scene.lights.add(directionalLight);
@@ -271,7 +289,7 @@ public final class Main {
         camera.renderImage();
         camera.writeToImage();
 
-
+/**
         Camera rotatedCamera1 = new Camera(camera.getP0(), camera.getVectorTo(), camera.getVectorUp())
                 .rotation(Math.PI / 4, Axis.Y);
         rotatedCamera1.setSize(200, 200).setDistance(1000).setRayTracer(new RayTracerBasic(scene));
@@ -299,7 +317,7 @@ public final class Main {
         rotatedCamera3.setRayTracer(new RayTracerBasic(scene).setAdaptiveGrid(true).setMaxLevel(3));
         rotatedCamera3.renderImage();
         rotatedCamera3.writeToImage();
-
+**/
     }
 
 }

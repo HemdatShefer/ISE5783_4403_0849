@@ -79,10 +79,9 @@ public abstract class Intersectable {
             if (obj == this) {
                 return true;
             }
-            if (!(obj instanceof GeoPoint)) {
+            if (!(obj instanceof GeoPoint other)) {
                 return false;
             }
-            GeoPoint other = (GeoPoint)obj;
             boolean sameGeometryType = this.geometry.getClass().equals(other.geometry.getClass());
             return sameGeometryType && this.point.equals(other.point);
         }

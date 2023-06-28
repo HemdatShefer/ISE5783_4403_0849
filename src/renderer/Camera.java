@@ -257,7 +257,8 @@ public class Camera {
      * @param i row
      * @return ray from p0 the center to the center of the pixel in row i column j
      */
-    public Ray constructRay(int nX, int nY, int j, int i) {
+    public Ray constructRay(int nX, int nY, int j, int i)
+    {
         return constructRay(nX, nY, j, i, width, height);
     }
 
@@ -271,28 +272,41 @@ public class Camera {
      * @param height the height of the view plane
      * @return ray from p0 the center to the center of the pixel in row and column
      */
-    public Ray constructRay(int nX, int nY, int column, int row, double width, double height) {
-        Vector dir;
-        Point pointCenter, pointCenterPixel;
-        double ratioY, ratioX, yI, xJ;
+        public Ray constructRay(int nX, int nY, int column, int row, double width, double height)
+        {
+            // הגדרת משתנים שישמשו במהלך המתודה.
+            Vector dir;
+            Point pointCenter, pointCenterPixel;
+            double ratioY, ratioX, yI, xJ;
 
-        pointCenter = p0.add(vectorTo.scale(distance));
-        ratioY = alignZero(height / nY);
-        ratioX = alignZero(width / nX);
+            // חישוב הנקודה שבמרכז המסך הווירטואלי.
+            pointCenter = p0.add(vectorTo.scale(distance));
 
-        pointCenterPixel = pointCenter;
-        yI = alignZero(-1 * (row - (nY - 1) / 2d) * ratioY);
-        xJ = alignZero((column - (nX - 1) / 2d) * ratioX);
-        if (!isZero(xJ)) {
-            pointCenterPixel = pointCenterPixel.add(vectorRight.scale(xJ));
+            // חישוב היחסים של גובה לרוחב של כל פיקסל במסך הווירטואלי.
+            ratioY = alignZero(height / nY);
+            ratioX = alignZero(width / nX);
+
+            // הגדרת הנקודה של הפיקסל המרכזי.
+            pointCenterPixel = pointCenter;
+
+            // חישוב מרכז הפיקסל שאליו נוצרת הקרן.
+            yI = alignZero(-1 * (row - (nY - 1) / 2d) * ratioY);
+            xJ = alignZero((column - (nX - 1) / 2d) * ratioX);
+
+            // חישוב המיקום של הנקודה בתוך המסך הווירטואלי.
+            if (!isZero(xJ)) {
+                pointCenterPixel = pointCenterPixel.add(vectorRight.scale(xJ));
+            }
+            if (!isZero(yI)) {
+                pointCenterPixel = pointCenterPixel.add(vectorUp.scale(yI));
+            }
+
+            // חישוב הכיוון של הקרן מהנקודה p0 לנקודה בתוך המסך הווירטואלי.
+            dir = pointCenterPixel.subtract(p0);
+
+            // יצירת הקרן והחזרתה.
+            return new Ray(p0, dir);
         }
-        if (!isZero(yI)) {
-            pointCenterPixel = pointCenterPixel.add(vectorUp.scale(yI));
-        }
-        dir = pointCenterPixel.subtract(p0);
-
-        return new Ray(p0, dir);
-    }
 
     /**
      * Find all the intersection points with the plan view and geometry.
@@ -418,17 +432,22 @@ public class Camera {
      * @throws MissingResourceException if some resource is missing
      */
     public ImageWriter printGridToImage(int interval, Color color) throws MissingResourceException {
-        checkAndThrowIfMissingResources();
+        checkAndThrowIfMissingResources(); // בדיקה אם כל המשאבים קיימים לפני הפעלת הפונקציה
+
+        // מעבר על כל השורות בתמונה באופן מקביל
         IntStream.range(0, imageWriter.getNx()).parallel().forEach(row -> {
             IntStream
+                    // מעבר על כל העמודות בתמונה באופן מקביל
                     .range(0, imageWriter.getNy())
                     .parallel()
-                    /* Filter only the pixels on the line */
+                    /* פילטרציה של רק אלו פיקסלים שנמצאים על הקו */
                     .filter(column -> row % interval == 0 || column % interval == 0)
+                    // כתיבה של הצבע המצויין לכל פיקסל שעבר את הפילטר
                     .forEach(column -> imageWriter.writePixel(row, column, color));
         });
-        return imageWriter;
+        return imageWriter; // החזרת המופע של ImageWriter שמכיל את התמונה שנכתבה
     }
+
 
 
     /**
